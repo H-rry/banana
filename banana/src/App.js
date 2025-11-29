@@ -3,45 +3,33 @@ import './App.css';
 
 function App() {
   // Default state matches the python structure
-  const [game, setGame] = useState({ story: [], options: [], location: "" });
+  const [game, setGame] = useState({ story: [], options: [], location: "" }); // update this accordingly
 
   // 1. Get Data on load
   useEffect(() => {
-    fetch('/api/data').then(res => res.json()).then(data => setGame(data));
+    fetch('/api/game').then(res => res.json()).then(data => setGame(data));
   }, []);
 
-  // 2. Handle Travel (Update Data)
-  const travel = (dest) => {
-    fetch('/api/move', {
+  // Function to send data back to the backend
+  const sendToBackend = (actionType, payload) => {
+    fetch('/api/game', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ destination: dest })
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        action: actionType,
+        ...payload 
+      }),
     })
     .then(res => res.json())
-    .then(data => setGame(data));
-  }
+    .then(data => setGame(data)) // Update frontend with new state from backend
+    .catch(err => console.error("Error:", err));
+  };
 
   return (
     <div className="app-container">
-      {/* Left: Story */}
-      <div className="col left">
-        <h3>Story</h3>
-        {game.story.map((text, i) => <p key={i}>{text}</p>)}
-      </div>
-
-      {/* Center: Globe */}
-      <div className="col center">
-        <h1>{game.location}</h1>
-        <div className="globe-box">Globe Goes Here</div>
-      </div>
-
-      {/* Right: Options */}
-      <div className="col right">
-        <h3>Travel To:</h3>
-        {game.options.map(opt => (
-          <button key={opt} onClick={() => travel(opt)}>{opt}</button>
-        ))}
-      </div>
+      {data}
     </div>
   );
 }
