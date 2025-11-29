@@ -6,7 +6,8 @@ function NavBar() {
             <div className="nav left">
                 <img src="logo.png" className="nav logo" alt="Logo" />
                 <div className="nav divider"></div>
-                <div className="nav button"></div>
+                <div className="nav title">The Bunch</div>
+                <div className="nav divider"></div>
             </div>
             <div className="nav right">
                 <div className="nav button"></div>
