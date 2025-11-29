@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+
 import './App.css';
 
- import Header from './components/Header.tsx';
+import Home from "./pages/Home";
+import Game from "./pages/Game";
 
 
 function App() {
@@ -32,7 +35,12 @@ function App() {
 
   return (
     <div className="app-container">
-      <Header />
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/game" element={<Game />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
