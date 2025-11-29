@@ -1,7 +1,9 @@
 import React from 'react'
 
+import { Link } from 'react-router-dom';
+
 import Background from './../components/Background.tsx';
-import Container from './../components/Container.tsx';
+import GameContainer from '../components/GameContainer.tsx';
 import NavBar from './../components/NavBar.tsx';
 
 function Game() {
@@ -9,7 +11,8 @@ function Game() {
         <div>
             <Background />
             <NavBar />
-            <Link to=""><button>Back to Home</button></Link>
+            <Link to="/"><button>Back to Home</button></Link>
+            <GameContainer />
         </div>
     )
 }

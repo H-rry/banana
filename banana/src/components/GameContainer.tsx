@@ -5,14 +5,14 @@ import Actions from './Actions.tsx';
 
 function Container() {
     return (
-        <div className="contents container">
-            <div className="contents left">
-                <div className="contents chat">
+        <div className="game container">
+            <div className="game left">
+                <div className="game chat">
                     <Chat />
                 </div>
             </div>
-            <div className="contents right">
-                <div className="contents actions">
+            <div className="game right">
+                <div className="game actions">
                     <Actions />
                 </div>
             </div>
