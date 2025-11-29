@@ -11,7 +11,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 app = Flask(__name__)
 app.config['SECRET_KEY'] = SECRET_KEY
 
-socketio = SocketIO(app)
+socketio = SocketIO(app, cors_allowed_origins="http://localhost:3000")
 
 # The game_state - I think this will look different as time moves forward:
 # Maybe we have a game state per user (long, lat, money) and more things to store spawns, destinations
