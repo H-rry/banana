@@ -45,9 +45,21 @@ def handle_game():
     # 2. If React is ASKING for data (Initial Load)
     return jsonify(game_state)
 
+@app.route("/api/login", methods=["POST"])
+def login():
+    data = request.json
+    username = data.get("username")
+    
+    # Store the username in the Flask session
+    session["username"] = username
+    print("Testing username", username)
+    
+    return jsonify({"status": "success", "username": username})
+
 
 @socketio.on('message')
 def handle_message(data):
+    print(data)
 
     # Get the username for the current session with a default of Anonymous
     username = session.get('username', 'Anonymous')
