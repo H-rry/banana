@@ -9,7 +9,7 @@ function MenuEarth() {
     if (globeEl.current) {
       console.log('Globe ref initialized');
       globeEl.current.controls().autoRotate = true;
-      globeEl.current.controls().autoRotateSpeed = 0.5;
+      globeEl.current.controls().autoRotateSpeed = 1;
     }
   }, []);
 

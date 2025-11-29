@@ -1,5 +1,5 @@
 :root {
-  --nav-bar-height: 75px;
+  --nav-bar-height: 50px;
   --contents-bg-colour: rgb(200, 200, 200, 0.4);
 }
 
@@ -52,42 +52,61 @@ body {
 /*--NAVBAR----------------------------------------*/
 .nav.bar {
   width: 100%;
-  height: 75px;
+  height: var(--nav-bar-height);
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  background-color: green;
+  background: linear-gradient(to top, rgba(200, 200, 200, 0.2), rgba(200, 200, 200, 0.4));
   background-clip: padding-box;
 }
 .nav.left, .nav.right {
   height: 100%;
-  gap: 20px;
-  padding: 0 30px;
+  gap: 10px;
+  padding: 0 20px;
+}
+.nav.box {
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 4px;
 }
 .nav.logo {
-  width: 75px;
-  height: 100%;
+  width: var(--nav-bar-height);
+  height: 80%;
 
   display: flex;
   align-items: center;
   justify-content: center;
-
-  background-color: lightsalmon;
 }
+.nav.logoSymbol {
+  width: 135%;
+  height: 135%;
+  transform: rotate(-20deg);
+}
+/* Very 70s of it (credits Charlie)*/
 .nav.title {
-  height: 100%;
+  width: 240px;
+  height: 80%;
 
   display: flex;
-  justify-content: left; /* centers horizontally */
+  justify-content: center; /* centers horizontally */
   align-items: center;
+  
   white-space: nowrap;
-  font-size: 50px;
+  font-size: 40px;
 }
 .nav.button {
-  width: 200px;
-  height: 100%;
-  background-color: purple;
+  width: calc(var(--nav-bar-height) * 0.8 * 1.1);
+  height: 80%;
+  
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+}
+.nav.settingsSymbol, .nav.profileSymbol {
+  width: 65%;
+  height: 65%;
 }
 .nav.divider {
   width: 0px;

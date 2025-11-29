@@ -8,6 +8,13 @@ import Actions from './../components/Actions.tsx';
 import NavBar from './../components/NavBar.tsx';
 
 function Game() {
+
+    const playButtonPressed = () => {
+
+    } 
+
+
+    
     return (
         <div>
             <div className="game background">
