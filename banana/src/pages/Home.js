@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
-import Background from './../components/Background.tsx';
 import NavBar from './../components/NavBar.tsx';
-import MenuContainer from './../components/MenuContainer.tsx';
+import MenuEarth from '../components/MenuEarth.tsx';
 
 // function Home() {
 //     return (
@@ -54,21 +53,34 @@ function Home() {
 
     return (
         <div>
-            <Background />
+            <div className="menu background">
+                <MenuEarth/>
+            </div>
             <NavBar />
-            
-            <div style={{ zIndex: 10, position: 'relative', textAlign: 'center', marginTop: '20vh' }}>
-                <input 
-                    type="text" 
-                    placeholder="Enter your name" 
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    style={{ padding: '10px', fontSize: '16px' }}
-                />
-                <br />
-                <button onClick={handleStartGame} style={{ marginTop: '10px' }}>
-                    Start Game
-                </button>
+
+            <Link to="/game"><button style={{pointerEvents: 'auto'}}>Start Game</button></Link>
+            <div className="menu container">
+                <div className="menu left">
+                    <div className="menu control">
+                        <button>Play</button>
+                        <div className="menu gameSettings">
+
+                        </div>
+                        <div className="menu profile" style={{ zIndex: 10, position: 'relative', textAlign: 'center', marginTop: '20vh' }}>
+                            <input 
+                                type="text" 
+                                placeholder="Enter your name" 
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                style={{ padding: '10px', fontSize: '16px' }}
+                            />
+                            <br />
+                            <button onClick={handleStartGame} style={{ marginTop: '10px' }}>
+                                Start Game
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     )

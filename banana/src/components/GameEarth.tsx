@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useMemo } from 'react';
 import Globe from 'react-globe.gl';
 
+
 interface Route {
   lat: number;
   lng: number;
@@ -20,7 +21,8 @@ interface EarthProps {
   players?: Player[];
 }
 
-function Earth({ players = [] }: EarthProps) {
+function GameEarth({ players = [] }: EarthProps) {
+
   const globeEl = useRef<any>(null);
 
   // Map input players to points data
@@ -64,18 +66,20 @@ function Earth({ players = [] }: EarthProps) {
 
   useEffect(() => {
     if (globeEl.current) {
-      globeEl.current.controls().autoRotate = true;
-      globeEl.current.controls().autoRotateSpeed = 0.5;
-      
       // Set initial point of view
       globeEl.current.pointOfView({ lat: 40, lng: -74, altitude: 2.5 });
+
+      globeEl.current.controls().autoRotate = false;
     }
   }, []);
 
+  
+
   return (
-    <div style={{ width: '100vw', height: '100vh', overflow: 'hidden', background: '#000' }}>
+    <div className="globe">
       <Globe
         ref={globeEl}
+
         // Night texture for the "GitHub" look
         globeImageUrl="//unpkg.com/three-globe/example/img/earth-day.jpg"
         bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
@@ -114,4 +118,4 @@ function Earth({ players = [] }: EarthProps) {
   );
 }
 
-export default Earth;
+export default GameEarth;
