@@ -1,0 +1,21 @@
+.app-container {
+  display: flex;
+  height: 100vh; /* Full Screen Height */
+}
+
+.col {
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+
+.left { flex: 1; overflow-y: auto; background: #f4f4f4; }
+.center { flex: 2; text-align: center; background: #222; color: white; }
+.right { flex: 1; background: #eee; }
+
+button {
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  width: 100%;
+  cursor: pointer;
+}
