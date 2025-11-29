@@ -1,12 +1,45 @@
-import React from 'react'
-
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 import Background from './../components/Background.tsx';
 import NavBar from './../components/NavBar.tsx';
 import MenuContainer from './../components/MenuContainer.tsx';
 
+// function Home() {
+//     return (
+//         <div>
+//             <Background />
+//             <NavBar />
+//             <Link to="/game"><button>Start Game</button></Link>
+//         </div>
+//     )
+// }
+
+// export default Home
+
 function Home() {
+    const [name, setName] = useState(""); // State to store the input name
+    const navigate = useNavigate(); // Hook to navigate programmatically
+
+    const handleStartGame = () => {
+        // Send the name to the backend
+        fetch('/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username: name }),
+        })
+        .then(res => res.json())
+        .then(data => {
+            // Once the name is stored in the session, navigate to the game
+            console.log("Logged in as:", data.username);
+            navigate('/game');
+        })
+        .catch(err => console.error("Error logging in:", err));
+    };
+
     return (
         <div>
             <Background />
@@ -17,4 +50,4 @@ function Home() {
     )
 }
 
-export default Home
+export default Home;
