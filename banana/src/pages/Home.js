@@ -18,6 +18,18 @@ import MenuContainer from './../components/MenuContainer.tsx';
 
 // export default Home
 
+// function Home() {
+//     return (
+//         <div>
+//             <Background />
+//             <NavBar />
+//             <Link to="/game"><button>Start Game</button></Link>
+//         </div>
+//     )
+// }
+
+// export default Home
+
 function Home() {
     const [name, setName] = useState(""); // State to store the input name
     const navigate = useNavigate(); // Hook to navigate programmatically
@@ -44,8 +56,20 @@ function Home() {
         <div>
             <Background />
             <NavBar />
-            <Link to="/game"><button>Start Game</button></Link>
-            <MenuContainer />
+            
+            <div style={{ zIndex: 10, position: 'relative', textAlign: 'center', marginTop: '20vh' }}>
+                <input 
+                    type="text" 
+                    placeholder="Enter your name" 
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    style={{ padding: '10px', fontSize: '16px' }}
+                />
+                <br />
+                <button onClick={handleStartGame} style={{ marginTop: '10px' }}>
+                    Start Game
+                </button>
+            </div>
         </div>
     )
 }
