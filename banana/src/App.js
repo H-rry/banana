@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
+ import Header from './components/Header.tsx';
+
+
 function App() {
   // Default state matches the python structure
   const [game, setGame] = useState({ story: [], options: [], location: "" }); // update this accordingly
@@ -29,7 +32,7 @@ function App() {
 
   return (
     <div className="app-container">
-      {data}
+      <Header />
     </div>
   );
 }
