@@ -9,7 +9,7 @@ function Game() {
         <div>
             <Background />
             <NavBar />
-            
+            <Link to=""><button>Back to Home</button></Link>
         </div>
     )
 }

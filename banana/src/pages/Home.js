@@ -11,9 +11,7 @@ function Home() {
         <div>
             <Background />
             <NavBar />
-            <Link to="/game">
-                <button>Start Game</button>
-            </Link>
+            <Link to="/game"><button>Start Game</button></Link>
             <Container />
         </div>
     )
