@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+
 import './App.css';
+
+import Home from "./pages/Home";
+import Game from "./pages/Game";
+
 
 function App() {
   // Default state matches the python structure
@@ -27,9 +33,16 @@ function App() {
     .catch(err => console.error("Error:", err));
   };
 
+
+
+
+
   return (
     <div className="app-container">
-      {data}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/game" element={<Game />} />
+      </Routes>
     </div>
   );
 }

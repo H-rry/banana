@@ -1,0 +1,29 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+banana/node_modules
+banana/.pnp
+banana/.pnp.js
+
+# testing
+banana/coverage
+
+# production
+banana/build
+
+# misc
+banana/.DS_Store
+banana/.env.local
+banana/.env.development.local
+banana/.env.test.local
+banana/.env.production.local
+
+banana/npm-debug.log*
+banana/yarn-debug.log*
+banana/yarn-error.log*
+
+banana/package-lock.json
+
+
+flask-server/__pycache__/
+flask-server/.env

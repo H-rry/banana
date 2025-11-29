@@ -1,21 +1,105 @@
-.app-container {
-  display: flex;
-  height: 100vh; /* Full Screen Height */
+:root {
+    --nav-bar-height: 75px;
+    --contents-bg-colour: rgba(255, 255, 255, 0.35);
 }
 
-.col {
-  padding: 20px;
-  border: 1px solid #ccc;
+
+body {
+    font-family: Arial, sans-serif;
+    background-clip: padding-box;
 }
 
-.left { flex: 1; overflow-y: auto; background: #f4f4f4; }
-.center { flex: 2; text-align: center; background: #222; color: white; }
-.right { flex: 1; background: #eee; }
+.background {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: -1;
+    background-color: black;
+}
 
-button {
-  display: block;
-  margin: 10px 0;
-  padding: 10px;
-  width: 100%;
-  cursor: pointer;
+.left {
+    justify-content: left;
+}
+.right {
+    justify-content: right;
+}
+
+
+
+/*--NAVBAR----------------------------------------*/
+.nav.bar {
+    width: 100%;
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background-color: green;
+    background-clip: padding-box;
+}
+.nav.left, .nav.right {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    gap: 20px;
+    padding: 0 30px;
+}
+.nav.logo {
+    width: 75px;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: lightsalmon;
+    background-clip: padding-box;
+}
+.nav.button {
+    width: 75px;
+    height: 100%;
+    background-color: purple;
+}
+.nav.divider {
+    width: 0px;
+    height: 75%;
+    border-left: 2px solid black;
+}
+
+
+
+/*--MENU----------------------------------------------------------------------------*/
+
+/*--GAME----------------------------------------------------------------------------*/
+.game.container {
+    width: 100%;
+    height: 100%;
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.game.left, .game.right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    
+    padding: 0 2%;
+}
+.game.chat, .game.actions {
+    border-radius: 20px;
+    background-color: var(--contents-bg-colour);
+    background-clip: padding-box;
+    box-shadow: none;
+}
+
+.game.chat {
+    width: 25vw;
+    height: calc(100vh - 200px);
+}
+.game.actions {
+    width: 25vw;
+    height: calc(100vh - 200px);
 }
