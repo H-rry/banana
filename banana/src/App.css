@@ -1,51 +1,69 @@
 :root {
-    --nav-bar-height: 75px;
-    --contents-bg-colour: rgb(200, 200, 200, 0.4);
+  --nav-bar-height: 75px;
+  --contents-bg-colour: rgb(200, 200, 200, 0.4);
 }
 
 
 body {
-    font-family: Arial, sans-serif;
-    background-clip: padding-box;
+  font-family: Arial, sans-serif;
+  background-clip: padding-box;
+  pointer-events: none;
 }
 
-.background {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    z-index: -1;
-    background-color: black;
-}
+
 
 .left, .right {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }
 .left {
-    justify-content: left;
+  justify-content: left;
 }
 .right {
-    justify-content: right;
+  justify-content: right;
+}
+
+
+
+
+/*--BACKGROUND---------------------------------------------------------------------*/
+.background {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: -1;
+  background-color: black;
+}
+.menu.background {
+  pointer-events: none;
+  right: 60%;
+  bottom: 40%;
+}
+.game.background {
+  pointer-events: auto;
+}
+.globe {
+  overflow: 'hidden';
 }
 
 
 
 /*--NAVBAR----------------------------------------*/
 .nav.bar {
-    width: 100%;
-    height: 75px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  width: 100%;
+  height: 75px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-    background-color: green;
-    background-clip: padding-box;
+  background-color: green;
+  background-clip: padding-box;
 }
 .nav.left, .nav.right {
-    height: 100%;
-    gap: 20px;
-    padding: 0 30px;
+  height: 100%;
+  gap: 20px;
+  padding: 0 30px;
 }
 .nav.logo {
   width: 75px;
@@ -67,28 +85,29 @@ body {
   font-size: 50px;
 }
 .nav.button {
-    width: 200px;
-    height: 100%;
-    background-color: purple;
+  width: 200px;
+  height: 100%;
+  background-color: purple;
 }
 .nav.divider {
-    width: 0px;
-    height: 75%;
-    border-left: 2px solid black;
+  width: 0px;
+  height: 75%;
+  border-left: 2px solid black;
 }
 
 
 /*--MENU+GAME-----------------------------------------------------------------------*/
 .container {
-    width: 100%;
-    height: 100%;
-    margin-top: 50px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  width: 100%;
+  height: 100%;
+  margin-top: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .menu.left, .game.left, .game.right {
-    padding: 0 2%;
+  pointer-events: auto;
+  padding: 0 2%;
 }
 
 
@@ -101,9 +120,7 @@ body {
   border-radius: 20px;
   background-color: var(--contents-bg-colour);
   background-clip: padding-box;
-  box-shadow: none;
 }
-
 
 
 /*--GAME----------------------------------------------------------------------------*/
@@ -111,9 +128,7 @@ body {
   border-radius: 20px;
   background-color: var(--contents-bg-colour);
   background-clip: padding-box;
-  box-shadow: none;
 }
-
 .game.chat {
   width: 25vw;
   height: calc(100vh - 200px);
@@ -122,3 +137,8 @@ body {
   width: 25vw;
   height: calc(100vh - 200px);
 }
+
+
+
+
+

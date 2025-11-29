@@ -2,17 +2,31 @@ import React from 'react'
 
 import { Link } from 'react-router-dom';
 
-import Background from './../components/Background.tsx';
-import GameContainer from '../components/GameContainer.tsx';
+import Earth from '../components/GameEarth.tsx';
+import Chat from './../components/Chat.tsx';
+import Actions from './../components/Actions.tsx';
 import NavBar from './../components/NavBar.tsx';
 
 function Game() {
     return (
         <div>
-            <Background />
+            <div className="game background">
+                <Earth />
+            </div>
             <NavBar />
-            <Link to="/"><button>Back to Home</button></Link>
-            <GameContainer />
+            <Link to="/"><button style={{pointerEvents: 'auto'}}>Back to Home</button></Link>
+            <div className="game container">
+                <div className="game left">
+                    <div className="game chat">
+                        <Chat />
+                    </div>
+                </div>
+                <div className="game right">
+                    <div className="game actions">
+                        <Actions />
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }
