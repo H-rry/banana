@@ -26,25 +26,16 @@ async def retriving_tasks(players, PTC):
         task_list.append(f"[{player}] Task: {task}")
     return task_list
 
-def run_setup():
+def run_setup(players):
       load_dotenv()
       OpenAI.api_key = os.getenv("OPENAI_API_KEY")
       if not OpenAI.api_key:
         print("Error: OPENAI_API_KEY environment variable not set.")
         exit()
 
-      """
-      from helper import list_of_players, locations
-
-      player_names = list_of_players()
-      locations = locations(player_names) # Needs n.o. players
-      Then initialise DB
-      
-      """
-
       from helper import initial_locations
 
-      player_names = ['Odysseus', 'Penelope', 'Telemachus', 'Eurycleia']
+      player_names = players
       number_of_player = len(player_names)
       locations = initial_locations(number_of_player)
 
