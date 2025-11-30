@@ -1,9 +1,22 @@
 import React from 'react'
 
+import State from './State.tsx';
+import Flight from './Flight.tsx';
+
 function Actions() {
     return (
-        <div className="contents actions">
-                
+        <div className="actions container">
+            <State />
+            <div className="actions scroll">
+                <div className="actions sign">Outbound:</div>
+                <Flight />
+                <Flight />
+                <Flight />
+                <Flight />
+                <Flight />
+                <Flight />
+                <Flight />
+            </div>
         </div>
     )
 }
