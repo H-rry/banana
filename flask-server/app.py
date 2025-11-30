@@ -72,6 +72,7 @@ def handle_game():
                     info = fd.get_airport_info(destination)
                     player.airport = destination
                     player.city = info["City"]
+                    player.country = info["Country"]
                     player.lat = info["Latitude"]
                     player.lng = info["Longitude"]
                     
@@ -107,6 +108,7 @@ def update_player_routes(player):
                     'lng': info['Longitude'],
                     'name': dest_iata, 
                     'city': info['City'],
+                    'country': info['Country'],
                     'distance': distance # Store distance
                 })
             except Exception as e:
@@ -148,7 +150,7 @@ def login():
         lat = info["Latitude"]
         lng = info["Longitude"]
 
-    player = Player(userid, username, airport, city, lat, lng, random.choice(PLAYER_COLORS))
+    player = Player(userid, username, airport, city, info["Country"], lat, lng, random.choice(PLAYER_COLORS))
     update_player_routes(player)
     players.append(player)
     
@@ -183,8 +185,7 @@ def handle_message(data):
         
         if user:
             # Send the message to the other players
-            emit("message", {'username': user.name, 'data': message}, broadcast=True)
-
+            emit("message", {'username': user.name, 'data': message, 'color': user.color}, broadcast=True)
 
 @socketio.on('disconnect')
 def handle_disconnect():

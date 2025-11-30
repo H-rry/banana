@@ -1,13 +1,21 @@
 import React from 'react'
 
-function State() {
+interface StateProps {
+    player: {
+        city: string;
+        airport: string;
+        country?: string;
+    };
+}
+
+function State({ player }: StateProps) {
     return (
         <div className="state container">
             <div className="state title">
-                Location: [Airport]
+                Location: {player.city} ({player.airport})
             </div>
             <div className="state details">
-                [country]
+                {player.country || "Unknown Country"}
             </div>
         </div>
     )
