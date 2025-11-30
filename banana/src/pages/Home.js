@@ -31,6 +31,7 @@ function Home() {
 
             if (socket) {
                 socket.disconnect();
+                socket.io.opts.query = { userid: data.userid };
                 socket.connect();
             }
 
@@ -46,7 +47,7 @@ function Home() {
             </div>
             <NavBar />
 
-            <Link to="/game"><button style={{pointerEvents: 'auto'}}>Start Game</button></Link>
+           
             <div className="menu container">
                 <div className="menu left">
                     <div className="menu control">
@@ -54,16 +55,15 @@ function Home() {
                         <div className="menu gameSettings">
 
                         </div>
-                        <div className="menu profile" style={{ zIndex: 10, position: 'relative', textAlign: 'center', marginTop: '20vh' }}>
+                        <div className="menu profile">
                             <input 
                                 type="text" 
                                 placeholder="Enter your name" 
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
-                                style={{ padding: '10px', fontSize: '16px' }}
                             />
                             <br />
-                            <button onClick={handleStartGame} style={{ marginTop: '10px' }}>
+                            <button onClick={handleStartGame}>
                                 Start Game
                             </button>
                         </div>

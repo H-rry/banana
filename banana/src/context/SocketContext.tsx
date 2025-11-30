@@ -18,7 +18,11 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
 
     useEffect(() => {
         // Initialize the socket once
-        const newSocket = io(); // Connects via your proxy
+        const newSocket = io({
+            query: {
+                userid: sessionStorage.getItem('userid')
+            }
+        }); // Connects via your proxy
         setSocket(newSocket);
 
         // Cleanup on unmount (e.g. if the user closes the tab)

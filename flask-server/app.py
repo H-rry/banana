@@ -18,7 +18,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 app = Flask(__name__)
 app.config['SECRET_KEY'] = SECRET_KEY
 
-socketio = SocketIO(app, cors_allowed_origins="http://localhost:3000")
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 # The game_state - I think this will look different as time moves forward:
 # Maybe we have a game state per user (long, lat, money) and more things to store spawns, destinations
@@ -75,6 +75,7 @@ def handle_game():
                     info = fd.get_airport_info(destination)
                     player.airport = destination
                     player.city = info["City"]
+                    player.country = info["Country"]
                     player.lat = info["Latitude"]
                     player.lng = info["Longitude"]
                     
@@ -103,17 +104,22 @@ def update_player_routes(player):
         for dest_iata in destinations:
             try:
                 info = fd.get_airport_info(dest_iata)
+                # Calculate distance
+                distance = fd.haversine_distance(player.lat, player.lng, info['Latitude'], info['Longitude'])
                 new_routes.append({
                     'lat': info['Latitude'],
                     'lng': info['Longitude'],
                     'name': dest_iata, 
-                    'city': info['City']
+                    'city': info['City'],
+                    'country': info['Country'],
+                    'distance': distance # Store distance
                 })
             except Exception as e:
                 # Destination airport info might not be in our CSV
                 continue
         
-        player.routes = new_routes
+        # Sort new_routes by distance
+        player.routes = sorted(new_routes, key=lambda r: r['distance'])
     except Exception as e:
         print(f"Error updating routes for {player.name}: {e}")
         player.routes = []
@@ -147,7 +153,7 @@ def login():
         lat = info["Latitude"]
         lng = info["Longitude"]
 
-    player = Player(userid, username, airport, city, lat, lng, random.choice(PLAYER_COLORS))
+    player = Player(userid, username, airport, city, info["Country"], lat, lng, random.choice(PLAYER_COLORS))
     update_player_routes(player)
     players.append(player)
     
@@ -161,7 +167,7 @@ def login():
 
 @socketio.on('connect')
 def handle_connect():
-    userid = session.get('userid')
+    userid = request.args.get('userid') or session.get('userid')
     if userid:
         print(f"User connected: {userid}")
         emit('players_update', [p.to_dict() for p in players])
@@ -217,4 +223,4 @@ def handle_disconnect():
 
 
 if __name__ == "__main__":
-    socketio.run(app, debug=True)
+    socketio.run(app, host='0.0.0.0', debug=True)
