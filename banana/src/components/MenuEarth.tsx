@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useMemo } from 'react';
 import Globe from 'react-globe.gl';
-import * as THREE from 'three';
 
 // Player data
 const menuPlayers = [
@@ -81,41 +80,9 @@ function MenuEarth() {
     if (!globeEl.current) return;
     globeEl.current.pointOfView({ lat: 40, lng: -74, altitude: 2.5 });
     globeEl.current.controls().autoRotate = true;
-    globeEl.current.controls().autoRotateSpeed = 1;
+    globeEl.current.controls().autoRotateSpeed = 0.5;
   }, []);
 
-  // Add static stars
-  useEffect(() => {
-    if (!globeEl.current) return;
-    const scene = globeEl.current.scene();
-    if (!scene) return;
-
-    const starCount = 1000;
-    const starVertices: number[] = [];
-    for (let i = 0; i < starCount; i++) {
-      const x = (Math.random() - 0.5) * 2000;
-      const y = (Math.random() - 0.5) * 2000;
-      const z = (Math.random() - 0.5) * 2000;
-      starVertices.push(x, y, z);
-    }
-
-    const starGeometry = new THREE.BufferGeometry();
-    starGeometry.setAttribute(
-      'position',
-      new THREE.Float32BufferAttribute(starVertices, 3)
-    );
-
-    const starMaterial = new THREE.PointsMaterial({
-      color: 0xffffff,
-      size: 1,
-      sizeAttenuation: true
-    });
-
-    const stars: THREE.Points = new THREE.Points(starGeometry, starMaterial);
-    scene.add(stars);
-
-    // No animation, stars remain static
-  }, []);
 
   return (
     <div className="globe">
