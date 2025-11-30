@@ -78,10 +78,19 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: transparent;
+
+  animation: shake 0.2s infinite alternate;
+  box-shadow:
+    0 0 3px var(--banana-yellow),
+    0 0 6px var(--banana-yellow),
+    0 0 9px var(--banana-yellow),
+    0 0 12px var(--banana-yellow);
 }
 .nav.logoSymbol {
   width: 100%;
   height: 110%;
+  background-color: transparent;
 }
 /* Very 70s of it (credits Charlie)*/
 .nav.title {
@@ -142,11 +151,53 @@ body {
 /*--MENU----------------------------------------------------------------------------*/
 .menu.control {
   width: 25vw;
-  height: calc(100vh - 200px);
-  
+  height: 200px;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
   border-radius: 20px;
   background-color: var(--contents-bg-colour);
   background-clip: padding-box;
+
+  animation: shake 0.2s infinite alternate;
+  color: var(--banana-yellow);
+  font-size: 30px;
+  text-shadow: 
+    0 0 5px var(--banana-yellow),   /* small glow */
+    0 0 10px var(--banana-yellow);  /* medium glow */
+
+  box-shadow:
+    0 0 5px var(--banana-yellow),
+    0 0 10px var(--banana-yellow),
+    0 0 20px var(--banana-yellow),
+    0 0 40px var(--banana-yellow);
+}
+.menu.joiner {
+  width: 80%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 20px;
+  font-size: 20px;
+  
+}
+.menu.input {
+  width: 80%;
+  height: 40px;
+  border: 2px solid black;
+  border-right: 1px solid black;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+.menu.button {
+  width: 25%;
+  height: 46px;
+  border: 2px solid black;
+  border-left: 1px solid black;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
 }
 
 
@@ -221,7 +272,7 @@ body {
   flex-direction: column; /* Stack from bottom to top */
   align-items: left;
   justify-content: flex-end;
-  
+  background: linear-gradient(to bottom, rgba(200, 0, 0, 0.2), rgba(200, 200, 200, 0), rgba(255, 255, 0, 0.25));
   animation: antishake 0.2s infinite alternate;
 }
 .chat.playerCount, .chat.window {
@@ -230,7 +281,7 @@ body {
   overflow-wrap: anywhere;
   overflow-y: auto;
 
-  border-top: 2px solid var(--banana-yellow);
+  
   box-shadow: inset 0 5px 20px var(--banana-yellow);
 }
 .chat.playerCount {
@@ -238,7 +289,7 @@ body {
   height: 20%;
 }
 .chat.window {
-  width: 96%;
+  width: calc(25vw - 20px);
   height: 80%;
   padding: 10px;
 }
@@ -250,6 +301,7 @@ body {
 }
 .chat.inputBar {
   width: 78%;
+  height:20px;
 }
 .chat.button {
   width: 20%;
@@ -260,6 +312,7 @@ body {
   width: 100%;
   height: 15%;
   border-top: 3px solid black;
+  background-image: url('./../public/leatherTexture.jpg');
 }
 .state.title {
   width: 100%;
@@ -282,7 +335,7 @@ body {
   flex-direction: column;
   padding-top: 40px;
   border-radius: 40px;
-  background-color: var(--contents-bg-colour);
+  background: linear-gradient(to top, rgba(241, 149, 50, 0.7), rgba(124, 76, 24, 0.7));
   background-clip: padding-box;
   color: white;
 }
