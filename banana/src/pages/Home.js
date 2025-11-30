@@ -51,22 +51,23 @@ function Home() {
             <div className="menu container">
                 <div className="menu left">
                     <div className="menu control">
-                        <button>Play</button>
-                        <div className="menu gameSettings">
 
-                        </div>
-                        <div className="menu profile">
+                        JOIN A GAME
+
+                        <div className="menu joiner">
                             <input 
+                                className="menu input"
                                 type="text" 
                                 placeholder="Enter your name" 
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                             />
                             <br />
-                            <button onClick={handleStartGame}>
-                                Start Game
+                            <button onClick={handleStartGame} className="menu button">
+                                Play
                             </button>
                         </div>
+                            
                     </div>
                 </div>
             </div>
