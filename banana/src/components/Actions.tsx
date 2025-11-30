@@ -80,7 +80,7 @@ function Actions({ currentPlayer }: ActionsProps) {
                                 pointerEvents: 'auto'
                             }}
                         >
-                            <span>✈️ {route.city}</span>
+                            <span> {route.city}</span>
                             <span style={{ fontSize: '0.8em', color: '#aaa' }}>{route.name}</span>
                         </button>
                     ))
