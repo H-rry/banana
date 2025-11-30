@@ -64,7 +64,7 @@ def login():
     data = request.json
     username = data.get("username")
     
-    userid = uuid.uuid4()
+    userid = str(uuid.uuid4())
 
     # Store the username in the Flask session
     session["userid"] = userid
@@ -76,7 +76,7 @@ def login():
     player = Player(userid, username, airport, lat, lng)
     players.append(player)
 
-    #emit("players", {'data': players}, broadcast=True)
+    socketio.emit("players", {'players': [p.to_dict() for p in players]})
     
     return jsonify({"status": "success", "username": username})
 
@@ -120,6 +120,8 @@ def handle_disconnect():
         remove_player(userid)
 
         emit("message", {'username': 'System', 'data': f'{player.name} has left the game.'}, broadcast=True)
+
+        emit("players", {'players': [p.to_dict() for p in players]}, broadcast=True)
         
 
 

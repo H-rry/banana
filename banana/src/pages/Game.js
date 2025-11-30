@@ -11,24 +11,37 @@ import { useSocket } from '../context/SocketContext.tsx'; // Import the hook
 
 function Game() {
 
-    // const { socket } = useSocket(); 
-    // const [playersData, setPlayers] = useState([]);
-
-
-    // useEffect(() => {
-    //         if (!socket) return;
+    const { socket } = useSocket(); 
+    const [players, setPlayers] = useState([]); // Initialize with empty array
     
-    //         // 2. Attach listeners just like before
-    //         socket.on("players", (p) => {
-    //             setPlayers((_) => p.data);
-    //             console.log(p);   
-    //         });
+    useEffect(() => {
+        fetch('/api/players')
+            .then(res => res.json())
+            .then(data => {
+                if (data.players) {
+                    setPlayers(data.players);
+                }
+            })
+            .catch(err => console.error("Error fetching players:", err));
+    }, []);
+
+    // 2. Listen for real-time updates via Socket
+    useEffect(() => {
+            if (!socket) return;
     
-    //         // Cleanup listener only (do not disconnect the socket!)
-    //         return () => {
-    //             socket.off("message");
-    //         };
-    //     }, [socket]);
+            socket.on("players", (p) => {
+                // Ensure we are setting the array correctly based on your server response structure
+                if (p.players) {
+                    setPlayers(p.players);
+                } else {
+                    console.log("Received malformed players data:", p);
+                } 
+            });
+    
+            return () => {
+                socket.off("players");
+            };
+        }, [socket]);
     
     const examplePlayers = [
         { 
@@ -57,7 +70,7 @@ function Game() {
     return (
         <div>
             <div className="game background">
-                <Earth players={examplePlayers}/>
+                <Earth players={players}/>
             </div>
             <NavBar />
             <Link to="/"><button style={{pointerEvents: 'auto'}}>Back to Home</button></Link>
