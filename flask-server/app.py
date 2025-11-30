@@ -154,12 +154,13 @@ def login():
         lng = info["Longitude"]
 
     player = Player(userid, username, airport, city, info["Country"], lat, lng, random.choice(PLAYER_COLORS))
+    player.goal_location = np.random.choice(fd.get_airports(), size = 1, replace=False) 
+    goal_info = fd.get_airport_info(player.goal_location)
     update_player_routes(player)
     players.append(player)
-    
     broadcast_players()
     task_agent = cachedAgents.get_agent("task_master")
-    task = prompt.get_task(task_agent)
+    task = prompt.get_task(task_agent, info)
     player.task = task
     socketio.emit("message", {'username': 'Task Master', 'data': task})
     

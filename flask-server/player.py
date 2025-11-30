@@ -11,6 +11,7 @@ class Player:
         self.routes = routes if routes is not None else []
         self.task = None
         self.points = 0
+        self.goal_location = None
     
     def to_dict(self):
         return {

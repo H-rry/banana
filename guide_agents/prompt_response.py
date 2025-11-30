@@ -25,11 +25,12 @@ async def get_riddle(agent, player):
     return riddle.strip()
 
 
-async def get_task(agent, player):
+async def get_task(agent, info):
     """
     Using the Task Master agent to generate a task to deliver.
     """
-    lat, lon = player.lat, player.lon
+    lat = info["Latitude"]
+    lng = info["Longitude"]
     cur_place = await asyncio.to_thread(get_nearby_place, lat, lon)
     input_message = (
         f"Define the critical objective item for Hero {player}. "
