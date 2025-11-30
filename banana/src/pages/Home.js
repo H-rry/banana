@@ -27,6 +27,7 @@ function Home() {
         .then(data => {
             // Once the name is stored in the session, navigate to the game
             console.log("Logged in as:", data.username);
+            sessionStorage.setItem('userid', data.userid); // Save User ID
 
             if (socket) {
                 socket.disconnect();
