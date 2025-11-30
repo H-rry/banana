@@ -23,6 +23,14 @@ def get_flights_in(airport_iata):
 def get_airports():
     return airports
 
+def get_airports_with_min_connections(min_connections):
+    # Group by Source airport and count
+    connection_counts = G_df['Source airport'].value_counts()
+    # Filter by min_connections
+    valid_iatas = connection_counts[connection_counts >= min_connections].index.tolist()
+    # Intersection with known airports to ensure we have their data
+    return [iata for iata in valid_iatas if iata in airports]
+
 def get_airport_info(airport_iata):
     info = airport_df[airport_df['IATA'] == airport_iata]
 

@@ -11,6 +11,7 @@ interface Player {
     id: string;
     name: string;
     color: string;
+    score: number;
 }
 
 interface ChatProps {
@@ -52,7 +53,7 @@ function Chat({ players = [] }: ChatProps) {
                     <div style={{ gap: '8px' }}>
                         {players.map(p => (
                             <div key={p.id} style={{ color: p.color, fontSize: '0.9em', marginBottom: '4px' }}>
-                                ● {p.name}
+                                ● {p.name}({p.score})
                             </div>
                         ))}
                     </div>

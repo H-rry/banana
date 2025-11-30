@@ -6,6 +6,15 @@ interface Route {
   lat: number;
   lng: number;
   name?: string;
+  city?: string;
+}
+
+interface Target {
+  iata: string;
+  city: string;
+  country: string;
+  lat: number;
+  lng: number;
 }
 
 interface Player {
@@ -15,6 +24,7 @@ interface Player {
   color?: string;
   name?: string;
   routes?: Route[];
+  target?: Target;
 }
 
 interface EarthProps {
@@ -42,7 +52,7 @@ function GameEarth({ players = [], myId }: EarthProps) {
 
   // Map routes to labels data
   const labelsData = useMemo(() => {
-    return players.flatMap(player => 
+    const routeLabels = players.flatMap(player => 
       (player.routes || []).map(route => ({
         lat: route.lat,
         lng: route.lng,
@@ -51,6 +61,18 @@ function GameEarth({ players = [], myId }: EarthProps) {
         size: 0.5
       }))
     );
+
+    const targetLabels = players
+      .filter(p => p.target)
+      .map(p => ({
+        lat: p.target!.lat,
+        lng: p.target!.lng,
+        text: `TARGET: ${p.target!.city}`,
+        color: 'red',
+        size: 0.7
+      }));
+
+    return [...routeLabels, ...targetLabels];
   }, [players]);
 
   // Compute Arcs (Routes) from Player -> Destination
@@ -69,7 +91,7 @@ function GameEarth({ players = [], myId }: EarthProps) {
 
   // Compute Rings at Destination Points
   const ringsData = useMemo(() => {
-    return players.flatMap(player => 
+    const routeRings = players.flatMap(player => 
       (player.routes || []).map(route => ({
         lat: route.lat,
         lng: route.lng,
@@ -79,6 +101,19 @@ function GameEarth({ players = [], myId }: EarthProps) {
         color: player.color // Optional: Ring matches player color
       }))
     );
+
+    const targetRings = players
+      .filter(p => p.target)
+      .map(p => ({
+        lat: p.target!.lat,
+        lng: p.target!.lng,
+        maxR: 5,
+        propagationSpeed: 2,
+        repeatPeriod: 1000,
+        color: 'red'
+      }));
+
+    return [...routeRings, ...targetRings];
   }, [players]);
 
   // Effect to center camera on player when they move

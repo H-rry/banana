@@ -12,6 +12,14 @@ interface Route {
     distance?: number;
 }
 
+interface Target {
+    iata: string;
+    city: string;
+    country: string;
+    lat: number;
+    lng: number;
+}
+
 interface Player {
     id: string;
     name: string;
@@ -19,6 +27,7 @@ interface Player {
     country?: string;
     airport: string;
     routes: Route[];
+    target?: Target;
 }
 
 interface ActionsProps {
@@ -56,6 +65,13 @@ function Actions({ currentPlayer }: ActionsProps) {
     return (
         <div className="actions container">
             <State player={currentPlayer} />
+            
+            {currentPlayer.target && (
+                <div className="actions sign" style={{ marginTop: '10px', color: '#FFD700', border: '1px solid #FFD700', padding: '5px' }}>
+                    Target: {currentPlayer.target.city} ({currentPlayer.target.iata})
+                </div>
+            )}
+            
             <div className="actions scroll">
                 <div className="actions sign">Outbound:</div>
                 {currentPlayer.routes.map((route) => (
