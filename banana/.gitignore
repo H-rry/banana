@@ -19,10 +19,9 @@
 .env.production.local
 
 .env
+
 # test
-# New line added in your branch for database dumps
 /db/dumps
-# New line added in main branch for temporary files
 /temp/
 
 npm-debug.log*
