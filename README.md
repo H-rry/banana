@@ -76,3 +76,9 @@ npm start
 ---
 
 ## Enjoy!!
+
+ADD .env FILE WITH 
+HOST=0.0.0.0
+PORT=3000
+to get multiplayer
+GOOD LUCK
