@@ -3,7 +3,7 @@ import asyncio
 from agents import Runner
 
 
-async def get_riddle(agent, player, PTC, end_destination, PRG):
+async def get_riddle(agent, player, PTC, end_destination):
     """
     Checks weather players task has been completed and gives riddle based on completion status:
     Either encrypted clues of where to look
@@ -33,7 +33,8 @@ async def get_riddle(agent, player, PTC, end_destination, PRG):
             "Do NOT use any tools. Use metaphor and geographical references."
         ) # Encripted to get to the final destination
 
-    riddle = await Runner.run(agent, input_message).final_output
+    riddle_response = await Runner.run(agent, input_message)
+    riddle = riddle_response.final_output
     PTC.loc[PTC['player'] == player, 'riddle_given'] = riddle
     PTC.loc[PTC['player'] == player, 'input_location'] = (lat, lon)
     return riddle.strip()
@@ -57,6 +58,27 @@ async def get_task(agent, player, PTC):
     PTC.loc[PTC['player'] == player, 'task'] = task
 
     return str(task) 
+
+
+async def get_judgement(agent, player,task, msg, history):
+    input_message = (
+        f"Decide weather or not {player} needs guidance to ahience their {task}based the their last message {msg}, and the {history}"
+        "If you think the player needs help return: YES"
+        "If you think the player needs some or no help return: NO"
+        "If you think the player has completed their task, return: COMPLETED"
+    )
+    judge_response = await Runner.run(agent, input_message)
+    judgement = judge_response.final_output
+    return str(judgement)
+
+async def get_help(agent, player,task, msg, history):
+    input_message = (
+        f"Give the player a helpful tip on how they could achieve their task."
+    )
+    help_response = await Runner.run(agent, input_message)
+    help = help_response.final_output
+    return str(help)
+
 
 
 
