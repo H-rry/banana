@@ -1,9 +1,10 @@
 class Player:
-    def __init__(self, userid, name, airport, city, lat, lng, color, routes=None):
+    def __init__(self, userid, name, airport, city, country, lat, lng, color, routes=None):
         self.id = userid
         self.name = name
         self.airport = airport
         self.city = city
+        self.country = country
         self.lat = lat
         self.lng = lng
         self.color = color
@@ -15,6 +16,7 @@ class Player:
             'name': self.name,
             'airport': self.airport,
             'city': self.city,
+            'country': self.country,
             'lat': self.lat,
             'lng': self.lng,
             'color': self.color,

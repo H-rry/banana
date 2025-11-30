@@ -1,23 +1,28 @@
 import React from 'react'
 
-const TravelButtonPressed = () => {
-    alert("travel button pressed");
+interface Route {
+    name: string; // IATA
+    city: string;
+    country?: string;
+    distance?: number;
 }
 
-function Flight() {
+interface FlightProps {
+    route: Route;
+    onTravel: (iata: string) => void;
+}
+
+function Flight({ route, onTravel }: FlightProps) {
     return (
-        <div className="flight container ">
+        <div className="flight container" onClick={() => onTravel(route.name)} style={{ cursor: 'pointer' }}>
             <div className="flight top">
                 <div className="flight title">
-                    [airport, city]
+                    {route.city} ({route.name})
                 </div>
-                <button className="flight button" onClick={TravelButtonPressed}>Travel
-
-                </button>
             </div>
             
             <div className="flight details">
-                [country]
+                {route.country} {route.distance ? `- ${Math.round(route.distance)}km` : ''}
             </div>
             
         </div>

@@ -7,7 +7,17 @@ interface Message {
     color?: string;
 }
 
-function Chat() {
+interface Player {
+    id: string;
+    name: string;
+    color: string;
+}
+
+interface ChatProps {
+    players?: Player[];
+}
+
+function Chat({ players = [] }: ChatProps) {
     // 1. Get the shared socket instance
     const { socket } = useSocket(); 
     const [messages, setMessages] = useState<Message[]>([]);
@@ -37,13 +47,20 @@ function Chat() {
     return (
         <div className="chat border">
             <div className='chat container'>
-                <div className="chat playerCount">
-                    
+                <div className="chat playerCount" style={{ padding: '10px', borderBottom: '1px solid #444', marginBottom: '10px' }}>
+                    <div style={{ fontWeight: 'bold', marginBottom: '5px', color: '#ccc' }}>Active Players ({players.length}):</div>
+                    <div style={{ gap: '8px' }}>
+                        {players.map(p => (
+                            <div key={p.id} style={{ color: p.color, fontSize: '0.9em', marginBottom: '4px' }}>
+                                ● {p.name}
+                            </div>
+                        ))}
+                    </div>
                 </div>
                 <div className="chat window">
                     {messages.map((msg, index) => (
-                        <div key={index} className="message">
-                            <strong>{msg.username}: </strong>
+                        <div key={index} className="message" style={{ color: msg.color || 'white' }}>
+                            <strong style={{ color: msg.color || 'white' }}>{msg.username}: </strong>
                             <span>{msg.data}</span>
                         </div>
                     ))}

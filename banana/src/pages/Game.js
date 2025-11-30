@@ -61,7 +61,7 @@ function Game() {
             <div className="game container">
                 <div className="game left">
                     <div className="game chat">
-                        <Chat />
+                        <Chat players={players} />
                     </div>
                 </div>
                 <div className="game right">
