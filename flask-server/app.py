@@ -3,6 +3,9 @@ from flask_socketio import SocketIO, send, emit
 import dotenv
 import os
 import flightdata as fd
+import uuid
+from player import Player
+import random
 
 dotenv.load_dotenv()
 
@@ -22,6 +25,17 @@ game_state = {
 }
 
 players = []
+
+def get_player(userid):
+    for player in players:
+        if player.id == userid:
+            return player
+
+def remove_player(userid):
+    for (i, player) in enumerate(players):
+        if player.id == userid:
+            players.pop(i)
+            return
 
 messages = []
 
@@ -50,10 +64,17 @@ def login():
     data = request.json
     username = data.get("username")
     
+    userid = uuid.uuid4()
+
     # Store the username in the Flask session
-    session["username"] = username
-    print(session)
-    print("Testing username", username)
+    session["userid"] = userid
+
+    airport = random.choice(fd.get_airports())
+    lat = fd.get_airport_info(airport)["Latitude"]
+    lng = fd.get_airport_info(airport)["Longitude"]
+
+    player = Player(userid, username, airport, lat, lng)
+    players.append(player)
     
     return jsonify({"status": "success", "username": username})
 
@@ -63,17 +84,36 @@ def handle_message(data):
     print(data)
     print(session)
     # Get the username for the current session with a default of Anonymous
-    username = session.get('username', 'Anonymous')
+    userid = session.get('userid', None)
+    if userid is None:
+        print("Error: No userId found")
 
     # Get the content of the message
     message = data.get('data')
 
     if message:
         # Add the message to the list of messages
-        messages.append((username, message))
+        messages.append((userid, message))
+
+        user = get_player(userid)
 
         # Send the message to the other players
-        emit("message", {'username': username, 'data': message}, broadcast=True)
+        emit("message", {'username': user.name, 'data': message}, broadcast=True)
+
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    # Attempt to retrieve the username from the session
+    userid = session.get('userid')
+
+    player = get_player(userid)
+
+    if player:
+        print(f"User disconnected: {player.name}")
+        remove_player(userid)
+
+        emit("message", {'username': 'System', 'data': f'{player.name} has left the game.'}, broadcast=True)
+        
 
 
 if __name__ == "__main__":
