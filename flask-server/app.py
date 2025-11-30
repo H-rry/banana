@@ -68,7 +68,12 @@ def login():
 
     # Store the username in the Flask session
     session["userid"] = userid
-    player = Player(userid, username, random.choice(fd.get_airports()))
+
+    airport = random.choice(fd.get_airports())
+    lat = fd.get_airport_info(airport)["Latitude"]
+    lng = fd.get_airport_info(airport)["Longitude"]
+
+    player = Player(userid, username, airport, lat, lng)
     players.append(player)
     
     return jsonify({"status": "success", "username": username})
