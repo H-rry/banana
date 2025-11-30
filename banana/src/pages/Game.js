@@ -9,7 +9,7 @@ import NavBar from './../components/NavBar.tsx';
 
 function Game() {
 
-    
+
     const examplePlayers = [
         { 
             id: 'player1', 
@@ -28,7 +28,7 @@ function Game() {
 
 
     const playButtonPressed = () => {
-
+        alert("play button pressed.")
     } 
 
 
