@@ -4,7 +4,7 @@ module.exports = function(app) {
   app.use(
     createProxyMiddleware({
       pathFilter: '/api',  // Only proxy requests starting with /api
-      target: 'http://127.0.0.1:5000', // Use 127.0.0.1 to prevent IPv6 issues
+      target: 'http://143.167.59.237:3000', // Use 127.0.0.1 to prevent IPv6 issues
       changeOrigin: true,
     })
   );
@@ -12,7 +12,7 @@ module.exports = function(app) {
   app.use(
     createProxyMiddleware({
       pathFilter: '/socket.io',
-      target: 'http://127.0.0.1:5000',
+      target: 'http://143.167.59.237:3000',
       changeOrigin: true,
       ws: true, // This enables WebSocket support
     })
