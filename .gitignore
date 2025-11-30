@@ -17,6 +17,7 @@ banana/.env.local
 banana/.env.development.local
 banana/.env.test.local
 banana/.env.production.local
+banana/guide_agents/.env
 
 banana/npm-debug.log*
 banana/yarn-debug.log*
