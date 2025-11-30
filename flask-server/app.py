@@ -132,7 +132,7 @@ def broadcast_players():
     socketio.emit('players_update', data)
 
 @app.route("/api/login", methods=["POST"])
-async def login():
+def login():
     data = request.json
     username = data.get("username")
     
@@ -142,7 +142,8 @@ async def login():
     session["userid"] = userid
 
     # airport = random.choice(fd.get_airports())
-    airport = np.random.choice(fd.get_airports(), size = 1, replace=False) 
+    #airport = np.random.choice(fd.get_airports(), size = 1, replace=False)
+    airport = "LHR" 
     try:
         info = fd.get_airport_info(airport)
         city = info["City"]
@@ -161,10 +162,10 @@ async def login():
     players.append(player)
     
     broadcast_players()
-    task_agent = cachedAgents.get_agent("task_master")
-    task = await prompt.get_task(task_agent, player)
-    player.task = task
-    socketio.emit("message", {'username': 'Task Master', 'data': task})
+    # task_agent = cachedAgents.get_agent("task_master")
+    # task = await prompt.get_task(task_agent, player)
+    # player.task = task
+    # socketio.emit("message", {'username': 'Task Master', 'data': task})
     
     return jsonify({"status": "success", "username": username, "userid": userid})
 
@@ -177,7 +178,7 @@ def handle_connect():
 
 
 @socketio.on('message')
-async def handle_message(data):
+def handle_message(data):
     print(data)
     print(session)
     # Get the username for the current session with a default of Anonymous
@@ -197,17 +198,17 @@ async def handle_message(data):
         if user:
             # Send the message to the other players
             emit("message", {'username': user.name, 'data': message}, broadcast=True)
-            judge_agent = cachedAgents.get_agent("judge")
-            if await prompt.get_judgement(judge_agent, user, user.task, message, messages):
-                task_agent = cachedAgents.get_agent("task_master")
-                user.task = await prompt.get_task(task_agent, user)
-                user.points += 1
-                message = f"{user.name} has completed their task: {user.task}. {user.name} has {user.points} points."
-                emit("message", {'username': 'Task Master', 'data': message}, broadcast=True)
-            else:
-                riddler_agent = cachedAgents.get_agent("riddler")
-                riddle = await prompt.get_riddle(riddler_agent, user)
-                emit("message", {'username': 'The Riddler', 'data': riddle}, broadcast=True)
+            # judge_agent = cachedAgents.get_agent("judge")
+            # if await prompt.get_judgement(judge_agent, user, user.task, message, messages):
+            #     task_agent = cachedAgents.get_agent("task_master")
+            #     user.task = await prompt.get_task(task_agent, user)
+            #     user.points += 1
+            #     message = f"{user.name} has completed their task: {user.task}. {user.name} has {user.points} points."
+            #     emit("message", {'username': 'Task Master', 'data': message}, broadcast=True)
+            # else:
+            #     riddler_agent = cachedAgents.get_agent("riddler")
+            #     riddle = await prompt.get_riddle(riddler_agent, user)
+            #     emit("message", {'username': 'The Riddler', 'data': riddle}, broadcast=True)
 
 
 @socketio.on('disconnect')
