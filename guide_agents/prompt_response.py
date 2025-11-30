@@ -85,10 +85,14 @@ async def get_task(agent, player, PTC):
     return str(task) 
 
 async def main(players, PTC):
+    print(f"Retriving missions for each of the {len(players)} players.")
     task_master = get_agent("task_master")
-    for player in players:
-        task = await get_task(task_master, player, PTC)
-        print(task)
+    
+    tasks = [get_task(task_master, player, PTC) for player in players]
+    results = await asyncio.gather(*tasks)
+
+    for player, task in zip(players, results):
+        print(f"[{player}] Task: {task}")
 
 if __name__ == "__main__":
       load_dotenv()
