@@ -4,7 +4,7 @@ def get_agent(agent_name):
     if agent_name not in _cached_agents:
         from agent_gen import (
             riddler_agent, 
-            geographer_agent, 
+            #geographer_agent, 
             task_master_agent, 
             helper_agent
         )

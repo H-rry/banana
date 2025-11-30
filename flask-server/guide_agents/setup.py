@@ -1,4 +1,4 @@
-from prompt_response import initialise, get_task
+from prompt_response import get_task
 from helper import populate_initial_state, initialize_riddle_dataframe
 from agent_cache import get_agent
 import os
@@ -33,7 +33,7 @@ def run_setup(players):
         print("Error: OPENAI_API_KEY environment variable not set.")
         exit()
 
-      from helper import initial_locations
+      
 
       player_names = players
       number_of_player = len(player_names)

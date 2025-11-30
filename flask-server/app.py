@@ -1,5 +1,8 @@
 from flask import Flask, jsonify, request, session
 from flask_socketio import SocketIO, send, emit
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), 'guide_agents'))
 import guide_agents.prompt_response as prompt 
 import guide_agents.agent_cache as cachedAgents
 import dotenv
@@ -129,7 +132,7 @@ def broadcast_players():
     socketio.emit('players_update', data)
 
 @app.route("/api/login", methods=["POST"])
-def login():
+async def login():
     data = request.json
     username = data.get("username")
     
@@ -159,7 +162,7 @@ def login():
     
     broadcast_players()
     task_agent = cachedAgents.get_agent("task_master")
-    task = prompt.get_task(task_agent)
+    task = await prompt.get_task(task_agent, player)
     player.task = task
     socketio.emit("message", {'username': 'Task Master', 'data': task})
     
@@ -174,7 +177,7 @@ def handle_connect():
 
 
 @socketio.on('message')
-def handle_message(data):
+async def handle_message(data):
     print(data)
     print(session)
     # Get the username for the current session with a default of Anonymous
@@ -194,16 +197,16 @@ def handle_message(data):
         if user:
             # Send the message to the other players
             emit("message", {'username': user.name, 'data': message}, broadcast=True)
-            judge_agent = cachedAgents.get_agent("The Judge")
-            if prompt.get_judgement(judge_agent, user, user.task, message, messages):
+            judge_agent = cachedAgents.get_agent("judge")
+            if await prompt.get_judgement(judge_agent, user, user.task, message, messages):
                 task_agent = cachedAgents.get_agent("task_master")
-                user.task = prompt.get_task(task_agent)
+                user.task = await prompt.get_task(task_agent, user)
                 user.points += 1
                 message = f"{user.name} has completed their task: {user.task}. {user.name} has {user.points} points."
                 emit("message", {'username': 'Task Master', 'data': message}, broadcast=True)
             else:
-                riddler_agent = cachedAgents.get_agent("The Riddler")
-                riddle = riddler_agent.get_riddle(riddler_agent, user)
+                riddler_agent = cachedAgents.get_agent("riddler")
+                riddle = await prompt.get_riddle(riddler_agent, user)
                 emit("message", {'username': 'The Riddler', 'data': riddle}, broadcast=True)
 
 

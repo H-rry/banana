@@ -29,7 +29,7 @@ async def get_task(agent, player):
     """
     Using the Task Master agent to generate a task to deliver.
     """
-    lat, lon = player.lat, player.lon
+    lat, lon = player.lat, player.lng
     cur_place = await asyncio.to_thread(get_nearby_place, lat, lon)
     input_message = (
         f"Define the critical objective item for Hero {player}. "
