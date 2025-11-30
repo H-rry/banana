@@ -79,9 +79,8 @@ body {
   justify-content: center;
 }
 .nav.logoSymbol {
-  width: 135%;
-  height: 135%;
-  transform: rotate(-20deg);
+  width: 100%;
+  height: 110%;
 }
 /* Very 70s of it (credits Charlie)*/
 .nav.title {

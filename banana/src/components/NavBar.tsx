@@ -15,7 +15,7 @@ function NavBar() {
         <nav className="nav bar">
             <div className="nav left">
                 <div className="nav box logo">
-                    <img src="logo.png" className="nav logoSymbol" alt="Logo" />
+                    <img src="logo.jpg" className="nav logoSymbol" alt="Logo" />
                 </div>
                 <div className="nav divider"></div>
                 <div className="nav box title">The Bunch</div>
