@@ -10,12 +10,6 @@ function Actions() {
             <div className="actions scroll">
                 <div className="actions sign">Outbound:</div>
                 <Flight />
-                <Flight />
-                <Flight />
-                <Flight />
-                <Flight />
-                <Flight />
-                <Flight />
             </div>
         </div>
     )

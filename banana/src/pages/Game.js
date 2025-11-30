@@ -39,7 +39,7 @@ function Game() {
                 <Earth players={examplePlayers}/>
             </div>
             <NavBar />
-            <Link to="/"><button style={{pointerEvents: 'auto'}}>Back to Home</button></Link>
+            
             <div className="game container">
                 <div className="game left">
                     <div className="game chat">

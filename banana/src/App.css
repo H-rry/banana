@@ -1,6 +1,7 @@
 :root {
   --nav-bar-height: 50px;
   --contents-bg-colour: rgb(200, 200, 200, 0.4);
+  --banana-yellow: rgb(255, 234, 2);
 }
 
 
@@ -35,7 +36,6 @@ body {
   height: 100%;
   position: fixed;
   z-index: -1;
-  background-color: black;
 }
 .menu.background {
   pointer-events: none;
@@ -68,7 +68,6 @@ body {
   padding: 0 20px;
 }
 .nav.box {
-  background-color: white;
   border: 1px solid black;
   border-radius: 4px;
 }
@@ -93,8 +92,16 @@ body {
   justify-content: center; /* centers horizontally */
   align-items: center;
   
+  color: white;
   white-space: nowrap;
   font-size: 40px;
+
+  animation: shake 0.2s infinite alternate;
+  box-shadow:
+    0 0 3px var(--banana-yellow),
+    0 0 6px var(--banana-yellow),
+    0 0 9px var(--banana-yellow),
+    0 0 12px var(--banana-yellow);
 }
 .nav.button {
   width: calc(var(--nav-bar-height) * 0.8 * 1.1);
@@ -117,7 +124,7 @@ body {
 
 
 /*--MENU+GAME-----------------------------------------------------------------------*/
-menu.container, .game.container {
+.menu.container, .game.container {
   width: 100%;
   height: 100%;
   margin-top: 50px;
@@ -149,26 +156,103 @@ menu.container, .game.container {
 }
 
 
-.chat.container, .actions.container {
+.chat.border, .actions.container {
   width: 25vw;
   height: calc(100vh - 200px);
-  padding-top: 40px;
-  border-radius: 40px;
-  background-color: var(--contents-bg-colour);
-  background-clip: padding-box;
+}
+.chat.border {
+  display: inline-block;
+  color: #0080ff; /* Neon blue text */
+  font-family: 'Press Start 2P', monospace;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  border: 4px solid var(--banana-yellow); /* base border */
+  /*background-color: rgba(20, 20, 20, 0.7);*/
+  animation: shake 0.2s infinite alternate;
+  box-shadow:
+    0 0 5px var(--banana-yellow),
+    0 0 10px var(--banana-yellow),
+    0 0 20px var(--banana-yellow),
+    0 0 40px var(--banana-yellow);
+}
+.border::before {
+  content: "";               /* required! */
+  position: absolute;        /* usually needed for layering */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('./../public/pixelBackground.jpg');
+  background-position: center;
+  opacity: 0.2;
+  pointer-events: none;      /* optional: so it doesn’t block clicks */
+  z-index: -1;
+
+  animation: antishake 0.5s infinite alternate;
+  animation: flicker 9s infinite alternate;
+}
+
+@keyframes flicker {
+  0%   { opacity: 0.05; }
+  25%  { opacity: 0.17; }
+  50%  { opacity: 0.1; }
+  75%  { opacity: 0.15; }
+  100% { opacity: 0.07; }
+}
+@keyframes shake {
+  20% { transform: translate(0px, 0px); }
+  40% { transform: translate(-0.3px, 0.2px); }
+  60% { transform: translate(-0.2px, -0.1px); }
+  80% { transform: translate(0.2px, -0.3px); }
+  100% { transform: translate(0.2px, 0.4px); }
+}
+@keyframes antishake {
+  20% { transform: translate(0px, 0px); }
+  40% { transform: translate(0.1px, -0.2px); }
+  60% { transform: translate(0.2px, 0.1px); }
+  80% { transform: translate(-0.2px, 0px); }
+  100% { transform: translate(0px, -0.4px); }
 }
 .chat.container {
-  align-items:end;
-  justify-content:left;
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: flex;
+  flex-direction: column; /* Stack from bottom to top */
+  align-items: left;
+  justify-content: flex-end;
+  
+  animation: antishake 0.2s infinite alternate;
+}
+.chat.playerCount, .chat.window {
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+  overflow-y: auto;
+
+  border-top: 2px solid var(--banana-yellow);
+  box-shadow: inset 0 5px 20px var(--banana-yellow);
+}
+.chat.playerCount {
+  width: 100%;
+  height: 20%;
 }
 .chat.window {
-  height: '80%';
-  padding: '10px';
-  overflow-y: 'auto';
+  width: 96%;
+  height: 80%;
+  padding: 10px;
 }
 .chat.input {
-  display: 'flex';
+  width: 100%;
+  overflow-y: 'auto';
+  
   margin-top: '10px';
+}
+.chat.inputBar {
+  width: 78%;
+}
+.chat.button {
+  width: 20%;
 }
 
 
@@ -196,6 +280,10 @@ menu.container, .game.container {
 .actions.container {
   display:flex;
   flex-direction: column;
+  padding-top: 40px;
+  border-radius: 40px;
+  background-color: var(--contents-bg-colour);
+  background-clip: padding-box;
   color: white;
 }
 .actions.scroll {
@@ -242,7 +330,7 @@ menu.container, .game.container {
   background-color: red;
 }
 .flight.title {
-  width: 75%;
+  width: 72%;
   height: 20px;
   padding-left: 10px;
   

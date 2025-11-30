@@ -34,27 +34,32 @@ function Chat() {
     };
 
     return (
-        <div className="chat container">
-             <div className="chat window">
-                 {messages.map((msg, index) => (
-                     <div key={index} className="message">
-                         <strong>{msg.username}: </strong>
-                         <span>{msg.data}</span>
-                     </div>
-                 ))}
-             </div>
-             <div className="chat input">
-                 <input
-                     type="text"
-                     value={currentMessage}
-                     onChange={(e) => setCurrentMessage(e.target.value)}
-                     onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-                     placeholder="Type a message..."
-                     style={{ flexGrow: 1 }}
-                 />
-                 <button onClick={sendMessage}>Send</button>
-             </div>
-         </div>
+        <div className="chat border">
+            <div className='chat container'>
+                <div className="chat playerCount">
+                    
+                </div>
+                <div className="chat window">
+                    {messages.map((msg, index) => (
+                        <div key={index} className="message">
+                            <strong>{msg.username}: </strong>
+                            <span>{msg.data}</span>
+                        </div>
+                    ))}
+                </div>
+                <div className="chat input">
+                    <input
+                        type="text"
+                        value={currentMessage}
+                        onChange={(e) => setCurrentMessage(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
+                        placeholder="Type a message..."
+                        className="chat inputBar"
+                    />
+                    <button onClick={sendMessage} className="chat button">Send</button>
+                </div>
+            </div>
+        </div>
     );
 }
 
