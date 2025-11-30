@@ -47,7 +47,7 @@ function Chat({ players = [] }: ChatProps) {
     return (
         <div className="chat border">
             <div className='chat container'>
-                <div className="chat playerCount" style={{ padding: '10px', borderBottom: '1px solid #444', marginBottom: '10px' }}>
+                <div className="chat playerCount">
                     <div style={{ fontWeight: 'bold', marginBottom: '5px', color: '#ccc' }}>Active Players ({players.length}):</div>
                     <div style={{ gap: '8px' }}>
                         {players.map(p => (

@@ -15,10 +15,12 @@ interface FlightProps {
 function Flight({ route, onTravel }: FlightProps) {
     return (
         <div className="flight container" onClick={() => onTravel(route.name)} style={{ cursor: 'pointer' }}>
-            <div className="flight top">
-                <div className="flight title">
-                    {route.city} ({route.name})
-                </div>
+            <div className="flight line">
+                
+            </div>
+
+            <div className="flight title">
+                {route.city} ({route.name})
             </div>
             
             <div className="flight details">
