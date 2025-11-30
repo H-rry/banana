@@ -59,22 +59,21 @@ def remove_player(userid):
 
 messages = []
 
-@app.route("/api/game", methods=["GET", "POST"]) # This is the route for sending data to and fro the frontend
+@app.route("/api/game", methods=["GET", "POST"]) 
 def handle_game():
-    # 1. If React is SENDING data (Action)
     if request.method == "POST":
         data = request.json
         action_type = data.get("action")
 
         if action_type == "move":
-            destination = data.get("destination") # Expecting IATA code
-            # Prefer explicit userid from request body (for multi-tab testing), fallback to session
+            destination = data.get("destination") 
             userid = data.get("userid") or session.get("userid")
             
             player = get_player(userid)
             
             if player:
                 try:
+                    # 1. Update Location
                     info = fd.get_airport_info(destination)
                     player.airport = destination
                     player.city = info["City"]
@@ -83,6 +82,22 @@ def handle_game():
                     player.lng = info["Longitude"]
                     
                     update_player_routes(player)
+
+                    # ---------------------------------------------------------
+                    # 2. CHECK WIN CONDITION
+                    # ---------------------------------------------------------
+                    if destination == player.target['iata']:
+                        # A. Increment Score
+                        player.score += 1
+                        
+                        # B. Broadcast Victory Message
+                        win_msg = f"🏆 {player.name} reached {player.target['city']}! (+1 Point)"
+                        socketio.emit("message", {'username': 'SYSTEM', 'data': win_msg})
+                        
+                        # C. Give them a new target so the game continues
+                        assign_new_target(player)
+                    # ---------------------------------------------------------
+
                     broadcast_players()
                     
                     return jsonify({"status": "success", "message": f"Traveled to {info['City']}"})
@@ -90,43 +105,71 @@ def handle_game():
                      print(f"Error moving player: {e}")
                      return jsonify({"status": "error", "message": "Invalid destination"}), 400
 
-    # 2. If React is ASKING for data (Initial Load)
     return jsonify([p.to_dict() for p in players])
 
 def update_player_routes(player):
     try:
+        # 1. Get all outbound flights
         outbound = fd.get_outbound_from(player.airport)
-        # Get unique destination IATAs
-        destinations = outbound['Destination airport'].unique().tolist()
+        all_destinations = outbound['Destination airport'].unique().tolist()
         
-        # Pick a subset to avoid overcrowding the map, e.g., 5 random routes
-        if len(destinations) > 5:
-            destinations = random.sample(destinations, 5)
-            
         new_routes = []
-        for dest_iata in destinations:
+        target_iata = player.target['iata']
+
+        # --- PRIORITY SCAN: CHECK FOR DIRECT FLIGHT TO TARGET ---
+        if target_iata in all_destinations:
+            try:
+                info = fd.get_airport_info(target_iata)
+                dist = fd.haversine_distance(player.lat, player.lng, info['Latitude'], info['Longitude'])
+                
+                new_routes.append({
+                    'lat': info['Latitude'],
+                    'lng': info['Longitude'],
+                    'name': target_iata, 
+                    'city': info['City'],
+                    'country': info['Country'],
+                    'distance': dist,
+                    'is_direct': True  # <--- SPECIAL FLAG
+                })
+                
+                # Remove it from the pool so we don't add it twice
+                all_destinations.remove(target_iata)
+            except Exception as e:
+                print(f"Target found in routes but data missing: {e}")
+
+        # --- FILL THE REST OF THE SLOTS ---
+        # We want 5 options total. If we found the target, we need 4 more. If not, 5.
+        slots_needed = 5 - len(new_routes)
+        
+        if len(all_destinations) > slots_needed:
+            random_dests = random.sample(all_destinations, slots_needed)
+        else:
+            random_dests = all_destinations
+
+        for dest_iata in random_dests:
             try:
                 info = fd.get_airport_info(dest_iata)
-                # Calculate distance
-                distance = fd.haversine_distance(player.lat, player.lng, info['Latitude'], info['Longitude'])
+                dist = fd.haversine_distance(player.lat, player.lng, info['Latitude'], info['Longitude'])
                 new_routes.append({
                     'lat': info['Latitude'],
                     'lng': info['Longitude'],
                     'name': dest_iata, 
                     'city': info['City'],
                     'country': info['Country'],
-                    'distance': distance # Store distance
+                    'distance': dist,
+                    'is_direct': False
                 })
-            except Exception as e:
-                # Destination airport info might not be in our CSV
+            except:
                 continue
         
-        # Sort new_routes by distance
-        player.routes = sorted(new_routes, key=lambda r: r['distance'])
+        # --- SORTING ---
+        # Sort so the Direct Target is ALWAYS at the top (True sorts before False if reversed)
+        # We sort by: 1. Is it the target? (descending), 2. Distance (ascending)
+        player.routes = sorted(new_routes, key=lambda x: (not x['is_direct'], x['distance']))
+
     except Exception as e:
         print(f"Error updating routes for {player.name}: {e}")
         player.routes = []
-
 def broadcast_players():
     data = [p.to_dict() for p in players]
     socketio.emit('players_update', data)
@@ -141,14 +184,16 @@ def login():
     # Store the username in the Flask session
     session["userid"] = userid
 
-    all_airports = fd.get_airports()
+    # Get airports with at least 15 connections for the target to ensure it's reachable/major
+    connected_airports = fd.get_airports_with_min_connections(150)
     
-    # Pick two unique airports
-    try:
-        start_iata, target_iata = random.sample(all_airports, 2)
-    except ValueError:
-         # Fallback if not enough airports
-        start_iata = "LHR"
+    start_iata = "LHR"
+    
+    # Pick a random target that is NOT LHR
+    possible_targets = [a for a in connected_airports if a != start_iata]
+    if possible_targets:
+        target_iata = random.choice(possible_targets)
+    else:
         target_iata = "JFK"
 
     # Setup Start
@@ -175,7 +220,7 @@ def login():
         "lng": target_info["Longitude"]
     }
 
-    player = Player(userid, username, start_iata, start_info["City"], start_info["Country"], start_info["Latitude"], start_info["Longitude"], random.choice(PLAYER_COLORS), target=target_data)
+    player = Player(userid, username, start_iata, start_info["City"], start_info["Country"], start_info["Latitude"], start_info["Longitude"], random.choice(PLAYER_COLORS), target=target_data, score=0)
     update_player_routes(player)
     players.append(player)
     
@@ -186,6 +231,31 @@ def login():
     # socketio.emit("message", {'username': 'Task Master', 'data': task})
     
     return jsonify({"status": "success", "username": username, "userid": userid})
+
+def assign_new_target(player):
+    # Get airports with connections
+    connected_airports = fd.get_airports_with_min_connections(90)
+    
+    # Ensure we don't pick the airport they are currently at
+    current_iata = player.airport
+    possible_targets = [a for a in connected_airports if a != current_iata]
+    
+    if possible_targets:
+        target_iata = random.choice(possible_targets)
+    else:
+        target_iata = "JFK" # Fallback
+
+    try:
+        target_info = fd.get_airport_info(target_iata)
+        player.target = {
+            "iata": target_iata,
+            "city": target_info["City"],
+            "country": target_info["Country"],
+            "lat": target_info["Latitude"],
+            "lng": target_info["Longitude"]
+        }
+    except Exception as e:
+        print(f"Error assigning target: {e}")
 
 @socketio.on('connect')
 def handle_connect():

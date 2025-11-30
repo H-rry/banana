@@ -1,5 +1,5 @@
 class Player:
-    def __init__(self, userid, name, airport, city, country, lat, lng, color, target=None, routes=None):
+    def __init__(self, userid, name, airport, city, country, lat, lng, color, score, target=None, routes=None):
         self.id = userid
         self.name = name
         self.airport = airport
@@ -9,6 +9,7 @@ class Player:
         self.lng = lng
         self.color = color
         self.target = target
+        self.score = score
         self.routes = routes if routes is not None else []
         self.task = None
         self.points = 0
@@ -24,5 +25,6 @@ class Player:
             'lng': self.lng,
             'color': self.color,
             'target': self.target,
+            'score': self.score,
             'routes': self.routes
         }
