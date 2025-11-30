@@ -52,6 +52,7 @@ def login():
     
     # Store the username in the Flask session
     session["username"] = username
+    print(session)
     print("Testing username", username)
     
     return jsonify({"status": "success", "username": username})
@@ -60,7 +61,7 @@ def login():
 @socketio.on('message')
 def handle_message(data):
     print(data)
-
+    print(session)
     # Get the username for the current session with a default of Anonymous
     username = session.get('username', 'Anonymous')
 

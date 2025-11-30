@@ -2,36 +2,17 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
+import { useSocket } from '../context/SocketContext.tsx';
+
 import NavBar from './../components/NavBar.tsx';
 import MenuEarth from '../components/MenuEarth.tsx';
 
-// function Home() {
-//     return (
-//         <div>
-//             <Background />
-//             <NavBar />
-//             <Link to="/game"><button>Start Game</button></Link>
-//         </div>
-//     )
-// }
-
-// export default Home
-
-// function Home() {
-//     return (
-//         <div>
-//             <Background />
-//             <NavBar />
-//             <Link to="/game"><button>Start Game</button></Link>
-//         </div>
-//     )
-// }
-
-// export default Home
 
 function Home() {
     const [name, setName] = useState(""); // State to store the input name
     const navigate = useNavigate(); // Hook to navigate programmatically
+
+    const { socket } = useSocket();
 
     const handleStartGame = () => {
         // Send the name to the backend
@@ -46,6 +27,12 @@ function Home() {
         .then(data => {
             // Once the name is stored in the session, navigate to the game
             console.log("Logged in as:", data.username);
+
+            if (socket) {
+                socket.disconnect();
+                socket.connect();
+            }
+
             navigate('/game');
         })
         .catch(err => console.error("Error logging in:", err));
