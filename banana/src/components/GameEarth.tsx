@@ -37,6 +37,19 @@ function GameEarth({ players = [] }: EarthProps) {
     }));
   }, [players]);
 
+  // Map routes to labels data
+  const labelsData = useMemo(() => {
+    return players.flatMap(player => 
+      (player.routes || []).map(route => ({
+        lat: route.lat,
+        lng: route.lng,
+        text: route.city || 'DEST',
+        color: 'white',
+        size: 0.5
+      }))
+    );
+  }, [players]);
+
   // Compute Arcs (Routes) from Player -> Destination
   const arcsData = useMemo(() => {
     return players.flatMap(player => 
@@ -57,9 +70,9 @@ function GameEarth({ players = [] }: EarthProps) {
       (player.routes || []).map(route => ({
         lat: route.lat,
         lng: route.lng,
-        maxR: 5,
-        propagationSpeed: 5,
-        repeatPeriod: 800,
+        maxR: 2,
+        propagationSpeed: 1,
+        repeatPeriod: 1500,
         color: player.color // Optional: Ring matches player color
       }))
     );
@@ -109,16 +122,25 @@ function GameEarth({ players = [] }: EarthProps) {
         pointLng="lng"
         pointColor="color"
         pointAltitude={0.1}
-        pointRadius="size"
+        pointRadius={0.5}
+
+        // Labels (Destinations)
+        labelsData={labelsData}
+        labelLat="lat"
+        labelLng="lng"
+        labelText="text"
+        labelColor="color"
+        labelSize={1.2}
+        labelDotRadius={0.4}
+        labelAltitude={0.01}
 
         // Flight Routes (Arcs)
         arcsData={arcsData}
         arcColor="color"
-        arcDashLength={0.5}
-        arcDashGap={0.5}
+        arcDashLength={1}
+        arcDashGap={0.0}
         arcDashAnimateTime={2000}
         arcStroke={0.5}
-        // arcLabel="name" // Optional: show tooltip on hover
         
         // Target Rings
         ringsData={ringsData}
