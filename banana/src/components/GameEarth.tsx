@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useMemo } from 'react';
+import React, { useRef, useEffect, useMemo, useState } from 'react';
 import Globe from 'react-globe.gl';
 
 
@@ -24,6 +24,7 @@ interface EarthProps {
 function GameEarth({ players = [] }: EarthProps) {
 
   const globeEl = useRef<any>(null);
+  const [countries, setCountries] = useState({ features: [] });
 
   // Map input players to points data
   const pointsData = useMemo(() => {
@@ -71,9 +72,10 @@ function GameEarth({ players = [] }: EarthProps) {
 
       globeEl.current.controls().autoRotate = false;
     }
+    fetch('https://raw.githubusercontent.com/vasturiano/react-globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson')
+      .then(res => res.json())
+      .then(setCountries);
   }, []);
-
-  
 
   return (
     <div className="globe">
@@ -82,9 +84,20 @@ function GameEarth({ players = [] }: EarthProps) {
 
         // Night texture for the "GitHub" look
         globeImageUrl="//unpkg.com/three-globe/example/img/earth-day.jpg"
+        //globeImageUrl={null}
         bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
         backgroundImageUrl="//unpkg.com/three-globe/example/img/night-sky.png"
-        
+
+        // Vectorised countries
+        polygonsData={countries.features}
+      
+        // 4. Style the Vector Polygons
+        polygonCapColor={() => 'rgba(39, 69, 39, 0.0)'} // The fill color
+        polygonSideColor={() => 'rgba(0, 100, 0, 0.15)'} // The 3D thickness color
+        polygonStrokeColor={() => '#003300'} // The border line color, changed to yellow
+        polygonAltitude={0.001} // Slight elevation to create depth, increased to make sides more visible
+
+
         // Aesthetic: Atmosphere glow
         showAtmosphere={true}
         atmosphereColor="#3a228a" // Cyberpunk/GitHub-ish purple-blue
