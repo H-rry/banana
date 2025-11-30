@@ -141,23 +141,41 @@ def login():
     # Store the username in the Flask session
     session["userid"] = userid
 
-    # airport = random.choice(fd.get_airports())
-    #airport = np.random.choice(fd.get_airports(), size = 1, replace=False)
-    airport = "LHR" 
+    all_airports = fd.get_airports()
+    
+    # Pick two unique airports
     try:
-        info = fd.get_airport_info(airport)
-        city = info["City"]
-        lat = info["Latitude"]
-        lng = info["Longitude"]
-    except:
-        # Fallback if LHR fails for some reason
-        airport = "JFK" 
-        info = fd.get_airport_info(airport)
-        city = info["City"]
-        lat = info["Latitude"]
-        lng = info["Longitude"]
+        start_iata, target_iata = random.sample(all_airports, 2)
+    except ValueError:
+         # Fallback if not enough airports
+        start_iata = "LHR"
+        target_iata = "JFK"
 
-    player = Player(userid, username, airport, city, info["Country"], lat, lng, random.choice(PLAYER_COLORS))
+    # Setup Start
+    try:
+        start_info = fd.get_airport_info(start_iata)
+    except Exception:
+        # Fallback
+        start_iata = "LHR"
+        start_info = fd.get_airport_info("LHR")
+
+    # Setup Target
+    try:
+        target_info = fd.get_airport_info(target_iata)
+    except Exception:
+        # Fallback
+        target_iata = "JFK"
+        target_info = fd.get_airport_info("JFK")
+
+    target_data = {
+        "iata": target_iata,
+        "city": target_info["City"],
+        "country": target_info["Country"],
+        "lat": target_info["Latitude"],
+        "lng": target_info["Longitude"]
+    }
+
+    player = Player(userid, username, start_iata, start_info["City"], start_info["Country"], start_info["Latitude"], start_info["Longitude"], random.choice(PLAYER_COLORS), target=target_data)
     update_player_routes(player)
     players.append(player)
     
