@@ -14,7 +14,10 @@ function Home() {
 
     const { socket } = useSocket();
 
+    const [loading, setLoading] = useState(false);
+
     const handleStartGame = () => {
+        setLoading(true);
         // Send the name to the backend
         fetch('/api/login', {
             method: 'POST',
@@ -66,6 +69,12 @@ function Home() {
                             <button onClick={handleStartGame} className="menu button">
                                 Play
                             </button>
+
+                            {loading && (
+                                <div className="loading">
+                                Loading...
+                                </div>
+                            )}
                         </div>
                             
                     </div>
