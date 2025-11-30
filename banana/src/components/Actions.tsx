@@ -1,5 +1,8 @@
 import React from 'react';
 
+import State from './State.tsx';
+import Flight from './Flight.tsx';
+
 interface Route {
     name: string; // IATA
     city: string;
@@ -47,6 +50,7 @@ function Actions({ currentPlayer }: ActionsProps) {
         return <div className="contents actions" style={{ padding: '20px', color: 'white' }}>Loading player data...</div>;
     }
 
+/*
     return (
         <div className="contents actions" style={{ padding: '20px', color: 'white', height: '100%', overflowY: 'auto' }}>
             <h2>Current Location</h2>
@@ -81,6 +85,16 @@ function Actions({ currentPlayer }: ActionsProps) {
                         </button>
                     ))
                 )}
+*/
+
+
+
+    return (
+        <div className="actions container">
+            <State />
+            <div className="actions scroll">
+                <div className="actions sign">Outbound:</div>
+                <Flight />
             </div>
         </div>
     )
