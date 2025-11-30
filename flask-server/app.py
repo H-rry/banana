@@ -100,17 +100,21 @@ def update_player_routes(player):
         for dest_iata in destinations:
             try:
                 info = fd.get_airport_info(dest_iata)
+                # Calculate distance
+                distance = fd.haversine_distance(player.lat, player.lng, info['Latitude'], info['Longitude'])
                 new_routes.append({
                     'lat': info['Latitude'],
                     'lng': info['Longitude'],
                     'name': dest_iata, 
-                    'city': info['City']
+                    'city': info['City'],
+                    'distance': distance # Store distance
                 })
             except Exception as e:
                 # Destination airport info might not be in our CSV
                 continue
         
-        player.routes = new_routes
+        # Sort new_routes by distance
+        player.routes = sorted(new_routes, key=lambda r: r['distance'])
     except Exception as e:
         print(f"Error updating routes for {player.name}: {e}")
         player.routes = []
