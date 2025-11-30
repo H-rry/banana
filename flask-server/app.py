@@ -1,12 +1,16 @@
 from flask import Flask, jsonify, request, session
 from flask_socketio import SocketIO, send, emit
+import guide_agents.prompt_response as prompt 
+import guide_agents.agent_cache as cachedAgents
 import dotenv
 import os
 import flightdata as fd
 import uuid
 from player import Player
 import random
+import numpy as np
 
+_cached_agents = {} 
 dotenv.load_dotenv()
 
 SECRET_KEY = os.getenv("SECRET_KEY")
@@ -61,7 +65,6 @@ def handle_game():
 
         if action_type == "move":
             destination = data.get("destination") # Expecting IATA code
-            
             # Prefer explicit userid from request body (for multi-tab testing), fallback to session
             userid = data.get("userid") or session.get("userid")
             
@@ -130,7 +133,7 @@ def login():
     session["userid"] = userid
 
     # airport = random.choice(fd.get_airports())
-    airport = "LHR" # Default start
+    airport = np.random.choice(fd.get_airports(), size = 1, replace=False) 
     try:
         info = fd.get_airport_info(airport)
         city = info["City"]
@@ -138,7 +141,7 @@ def login():
         lng = info["Longitude"]
     except:
         # Fallback if LHR fails for some reason
-        airport = "JFK"
+        airport = "JFK" 
         info = fd.get_airport_info(airport)
         city = info["City"]
         lat = info["Latitude"]
@@ -149,6 +152,10 @@ def login():
     players.append(player)
     
     broadcast_players()
+    task_agent = cachedAgents.get_agent("task_master")
+    task = prompt.get_task(task_agent)
+    player.task = task
+    emit("message", {'username': 'Task Master', 'data': task}, broadcast=True)
     
     return jsonify({"status": "success", "username": username, "userid": userid})
 
@@ -158,6 +165,7 @@ def handle_connect():
     if userid:
         print(f"User connected: {userid}")
         emit('players_update', [p.to_dict() for p in players])
+
 
 @socketio.on('message')
 def handle_message(data):
@@ -180,6 +188,17 @@ def handle_message(data):
         if user:
             # Send the message to the other players
             emit("message", {'username': user.name, 'data': message}, broadcast=True)
+            judge_agent = cachedAgents.get_agent("The Judge")
+            if prompt.get_judgement(judge_agent, user, user.task, message, messages):
+                task_agent = cachedAgents.get_agent("task_master")
+                user.task = prompt.get_task(task_agent)
+                user.points += 1
+                message = f"{user.name} has completed their task: {user.task}. {user.name} has {user.points} points."
+                emit("message", {'username': 'Task Master', 'data': message}, broadcast=True)
+            else:
+                riddler_agent = cachedAgents.get_agent("The Riddler")
+                riddle = riddler_agent.get_riddle(riddler_agent, user)
+                emit("message", {'username': 'The Riddler', 'data': riddle}, broadcast=True)
 
 
 @socketio.on('disconnect')

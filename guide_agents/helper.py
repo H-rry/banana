@@ -129,18 +129,10 @@ def populate_initial_state(players, initial_locations) -> pd.DataFrame:
 
 def initial_locations(players):
     locations = np.array([
-    (40.7128, -74.0060),    # NYC, USA
-    (51.5074, 0.1278),      # London, UK
-    (35.6895, 139.6917),    # Tokyo, Japan
-    (33.7490, -84.3880),    # Atlanta, USA
-    (48.8566, 2.3522),      # Paris, France
-    (-33.8688, 151.2093),   # Sydney, Australia
-    (-22.9068, -43.1729),   # Rio de Janeiro, Brazil
-    (41.9028, 12.4964),     # Rome, Italy
-    (25.2048, 55.2708)      # Dubai, UAE
+
     ])
     number_of_players = len(players)
-    rand_locations = np.random.choice(locations, size = number_of_players, replace=False)
+    rand_locations = np.random.choice(locations, size = 1, replace=False)
     return rand_locations
 
 
