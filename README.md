@@ -1,6 +1,6 @@
 # Project Banana 🍌
 
-This repository contains a hybrid application with a React frontend and a Flask backend.
+This repository contains a game! Using a React frontend and a Flask backend.
 
 ## Project Structure
 
@@ -42,7 +42,7 @@ source venv/bin/activate
 Install the required packages (if you haven't already):
 
 ```bash
-pip install flask
+pip install -r requirements.txt
 ```
 
 Run the server:
@@ -75,8 +75,4 @@ npm start
 
 ---
 
-## How it Works
-
-- The React app (`port 3000`) proxies API requests to the Flask server (`port 5000`).
-- This configuration is handled in `banana/src/setupProxy.js`.
-- Any fetch request made from React to a relative path (e.g., `fetch('/members')`) will be automatically forwarded to the Flask backend.
+## Enjoy!!
