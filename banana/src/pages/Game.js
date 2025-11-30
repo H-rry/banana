@@ -35,7 +35,7 @@ function Game() {
     return (
         <div>
             <div className="game background">
-                <Earth players={players}/>
+                <Earth players={players} myId={myId} />
             </div>
             <NavBar />
             <Link to="/"><button style={{pointerEvents: 'auto'}}>Back to Home</button></Link>

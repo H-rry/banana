@@ -14,7 +14,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 app = Flask(__name__)
 app.config['SECRET_KEY'] = SECRET_KEY
 
-socketio = SocketIO(app, cors_allowed_origins="http://localhost:3000")
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 # The game_state - I think this will look different as time moves forward:
 # Maybe we have a game state per user (long, lat, money) and more things to store spawns, destinations
@@ -154,7 +154,7 @@ def login():
 
 @socketio.on('connect')
 def handle_connect():
-    userid = session.get('userid')
+    userid = request.args.get('userid') or session.get('userid')
     if userid:
         print(f"User connected: {userid}")
         emit('players_update', [p.to_dict() for p in players])
@@ -198,4 +198,4 @@ def handle_disconnect():
 
 
 if __name__ == "__main__":
-    socketio.run(app, debug=True)
+    socketio.run(app, host='0.0.0.0', debug=True)

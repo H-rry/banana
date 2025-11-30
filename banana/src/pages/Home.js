@@ -31,6 +31,7 @@ function Home() {
 
             if (socket) {
                 socket.disconnect();
+                socket.io.opts.query = { userid: data.userid };
                 socket.connect();
             }
 

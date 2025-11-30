@@ -19,11 +19,14 @@ interface Player {
 
 interface EarthProps {
   players?: Player[];
+  myId?: string | null;
 }
 
-function GameEarth({ players = [] }: EarthProps) {
+function GameEarth({ players = [], myId }: EarthProps) {
 
   const globeEl = useRef<any>(null);
+  const prevLat = useRef<number | null>(null);
+  const prevLng = useRef<number | null>(null);
   const [countries, setCountries] = useState({ features: [] });
 
   // Map input players to points data
@@ -77,6 +80,26 @@ function GameEarth({ players = [] }: EarthProps) {
       }))
     );
   }, [players]);
+
+  // Effect to center camera on player when they move
+  useEffect(() => {
+    if (!globeEl.current || !myId) return;
+
+    const me = players.find(p => p.id === myId);
+    if (me) {
+        // Only move camera if position changed significantly
+        if (prevLat.current !== me.lat || prevLng.current !== me.lng) {
+            globeEl.current.pointOfView({
+                lat: me.lat,
+                lng: me.lng,
+                altitude: 2.5
+            }, 1000); // 1 second smooth transition
+
+            prevLat.current = me.lat;
+            prevLng.current = me.lng;
+        }
+    }
+  }, [players, myId]);
 
   useEffect(() => {
     if (globeEl.current) {
