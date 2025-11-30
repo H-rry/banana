@@ -9,6 +9,8 @@ class Player:
         self.lng = lng
         self.color = color
         self.routes = routes if routes is not None else []
+        self.task = None
+        self.points = 0
     
     def to_dict(self):
         return {
