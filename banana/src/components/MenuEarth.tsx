@@ -3,20 +3,20 @@ import Globe from 'react-globe.gl';
 
 // Player data
 const menuPlayers = [
-  { 
-    id: 'player1', 
-    lat: 40.7128, 
-    lng: -74.0060, // NYC
-    color: 'cyan', 
-    name: 'Agent Smith',
-    routes: [
-      { lat: 51.5074, lng: -0.1278, name: 'London' },
-      { lat: 35.6762, lng: 139.6503, name: 'Tokyo' }
-    ]
-  }, 
+  { id: 'player1', lat: 40.7128, lng: -74.0060, color: 'cyan', name: 'Agent Smith', routes: [
+    { lat: 51.5074, lng: -0.1278, name: 'London' },
+    { lat: 35.6762, lng: 139.6503, name: 'Tokyo' }]}, // NY
   { id: 'player2', lat: 34.0522, lng: -118.2437, color: 'lime', name: 'Agent Johnson' }, // LA
-  { id: 'player3', lat: -33.8688, lng: 151.2093, color: 'magenta', name: 'Agent Brown' } // Sydney
-];
+  { id: 'player3', lat: -33.8688, lng: 151.2093, color: 'magenta', name: 'Agent Brown' }, // Sydney
+  { id: 'player4', lat: 48.8566, lng: 2.3522, color: 'orange', name: 'Agent Dubois', routes: [
+    { lat: 41.9028, lng: 12.4964, name: 'Rome' },
+    { lat: 52.5200, lng: 13.4050, name: 'Berlin' }]}, // Paris
+  { id: 'player5', lat: -23.5505, lng: -46.6333,color: 'pink', name: 'Agent Silva', routes: [
+    { lat: -34.6037, lng: -58.3816, name: 'Buenos Aires' },
+    { lat: -22.9068, lng: -43.1729, name: 'Rio de Janeiro' }]},  // São Paulo
+  { id: 'player6', lat: 55.7558, lng: 37.6173, color: 'red', name: 'Agent Ivanov',routes: [
+    { lat: 59.9343, lng: 30.3351, name: 'Saint Petersburg' }]}
+];// Moscow
 
 interface Route {
   lat: number;
