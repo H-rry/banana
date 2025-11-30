@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 
 import { Link } from 'react-router-dom';
 
@@ -7,8 +7,28 @@ import Chat from './../components/Chat.tsx';
 import Actions from './../components/Actions.tsx';
 import NavBar from './../components/NavBar.tsx';
 
+import { useSocket } from '../context/SocketContext.tsx'; // Import the hook
+
 function Game() {
 
+    // const { socket } = useSocket(); 
+    // const [playersData, setPlayers] = useState([]);
+
+
+    // useEffect(() => {
+    //         if (!socket) return;
+    
+    //         // 2. Attach listeners just like before
+    //         socket.on("players", (p) => {
+    //             setPlayers((_) => p.data);
+    //             console.log(p);   
+    //         });
+    
+    //         // Cleanup listener only (do not disconnect the socket!)
+    //         return () => {
+    //             socket.off("message");
+    //         };
+    //     }, [socket]);
     
     const examplePlayers = [
         { 
@@ -25,6 +45,7 @@ function Game() {
         { id: 'player2', lat: 34.0522, lng: -118.2437, color: 'lime', name: 'Agent Johnson' }, // LA
         { id: 'player3', lat: -33.8688, lng: 151.2093, color: 'magenta', name: 'Agent Brown' } // Sydney
     ];
+
 
 
     const playButtonPressed = () => {

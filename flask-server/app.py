@@ -75,8 +75,15 @@ def login():
 
     player = Player(userid, username, airport, lat, lng)
     players.append(player)
+
+    #emit("players", {'data': players}, broadcast=True)
     
     return jsonify({"status": "success", "username": username})
+
+
+@app.route("/api/players", methods=["GET"])
+def get_players():
+    return jsonify({"players": [p.to_dict() for p in players]})
 
 
 @socketio.on('message')
