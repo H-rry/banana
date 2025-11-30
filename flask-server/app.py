@@ -24,6 +24,19 @@ game_state = {
     "options": ["Paris", "New York", "Tokyo"]
 }
 
+PLAYER_COLORS = [
+    "#00FFFF", # Cyan
+    "#FF00FF", # Magenta
+    "#00FF00", # Lime
+    "#FFFF00", # Yellow
+    "#FF4500", # OrangeRed
+    "#FF1493", # DeepPink
+    "#00BFFF", # DeepSkyBlue
+    "#7FFF00", # Chartreuse
+    "#FFD700", # Gold
+    "#FF69B4", # HotPink
+]
+
 players = []
 
 def get_player(userid):
@@ -48,7 +61,10 @@ def handle_game():
 
         if action_type == "move":
             destination = data.get("destination") # Expecting IATA code
-            userid = session.get("userid")
+            
+            # Prefer explicit userid from request body (for multi-tab testing), fallback to session
+            userid = data.get("userid") or session.get("userid")
+            
             player = get_player(userid)
             
             if player:
@@ -128,7 +144,7 @@ def login():
         lat = info["Latitude"]
         lng = info["Longitude"]
 
-    player = Player(userid, username, airport, city, lat, lng)
+    player = Player(userid, username, airport, city, lat, lng, random.choice(PLAYER_COLORS))
     update_player_routes(player)
     players.append(player)
     

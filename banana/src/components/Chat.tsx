@@ -84,6 +84,7 @@ import { useSocket } from '../context/SocketContext.tsx'; // Import the hook
 interface Message {
     username: string;
     data: string;
+    color?: string;
 }
 
 function Chat() {
@@ -118,7 +119,7 @@ function Chat() {
              <div className="chat-window" style={{ height: '80%', overflowY: 'auto', padding: '10px' }}>
                  {messages.map((msg, index) => (
                      <div key={index} className="message">
-                         <strong>{msg.username}: </strong>
+                         <strong style={{ color: msg.color || 'inherit' }}>{msg.username}: </strong>
                          <span>{msg.data}</span>
                      </div>
                  ))}

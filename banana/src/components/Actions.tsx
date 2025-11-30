@@ -28,7 +28,8 @@ function Actions({ currentPlayer }: ActionsProps) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     action: 'move',
-                    destination: destinationIata
+                    destination: destinationIata,
+                    userid: currentPlayer?.id // Explicitly send the user ID
                 })
             });
             const data = await res.json();
