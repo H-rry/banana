@@ -161,7 +161,7 @@ def login():
     task_agent = cachedAgents.get_agent("task_master")
     task = prompt.get_task(task_agent)
     player.task = task
-    emit("message", {'username': 'Task Master', 'data': task}, broadcast=True)
+    socketio.emit("message", {'username': 'Task Master', 'data': task})
     
     return jsonify({"status": "success", "username": username, "userid": userid})
 
