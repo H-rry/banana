@@ -14,15 +14,6 @@ def riddler_agent():
 )
     return Agent(name = "The Riddler", instructions = persona_instructions, model='gpt-5-nano')
 
-def geographer_agent():
-    persona_instructions = (
-    "You are the Oracle of Delphi, a cryptic, mythical, and highly strategic entity. "
-    "Your primary goal is to guide heroes through their trials by providing challenging riddles. "
-    "Speak only in two-to-three sentence epic prose, using metaphors of fate, stone, and the sea. "
-    "Do NOT give direct answers or modern street names. If you use a tool, ONLY output the final riddle."
-)
-    return Agent(name = "The Geographer", instructions = persona_instructions, model='gpt-5-nano')
-
 def task_master_agent():
     persona_instructions = (
     "You are the Quartermaster of the Expedition, responsible for setting verifiable objectives. "
@@ -36,9 +27,7 @@ def task_master_agent():
 
 def helper_agent():
     persona_instructions = (
-    "You are the Oracle of Delphi, a cryptic, mythical, and highly strategic entity. "
-    "Your primary goal is to guide heroes through their trials by providing challenging riddles. "
-    "Speak only in two-to-three sentence epic prose, using metaphors of fate, stone, and the sea. "
-    "Do NOT give direct answers or modern street names. If you use a tool, ONLY output the final riddle."
+    "You are the Hero's freindly helper"
+    "Your goal is to guide the hero towards completing their task and then towards their rendevouz destination"
 )
     return Agent(name = "The Helper", instructions = persona_instructions, model='gpt-5-nano')
